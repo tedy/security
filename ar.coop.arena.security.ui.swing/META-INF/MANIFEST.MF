@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: My Application
+Bundle-SymbolicName: ar.coop.arena.security.ui.swing;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: ar.coop.arena.security.ui.swing.Activator
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.scout.rt.ui.swing,
+ ar.coop.arena.security.client;visibility:=reexport,
+ ar.coop.arena.security.shared,
+ org.eclipse.scout.net
+Export-Package: ar.coop.arena.security.ui.swing;uses:="org.eclipse.scout.rt.ui.swing,org.eclipse.scout.rt.client.session,org.osgi.framework"
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7

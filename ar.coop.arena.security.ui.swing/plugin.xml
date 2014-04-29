@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+  <extension id="app" name="Application" point="org.eclipse.core.runtime.applications">
+    <application>
+      <run class="ar.coop.arena.security.ui.swing.SwingApplication"/>
+    </application>
+  </extension>
+  <extension id="product" point="org.eclipse.core.runtime.products">
+    <product
+          application="ar.coop.arena.security.ui.swing.app"
+          name="security">
+       <property
+             name="appName"
+             value="security">
+       </property>
+    </product>
+  </extension>
+</plugin>

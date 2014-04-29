@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+
+   <extension
+         name=""
+         point="org.eclipse.scout.service.services">
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="org.eclipse.scout.rt.server.services.common.bookmark.FileSystemBookmarkStorageService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="org.eclipse.scout.rt.server.services.common.workflow.WorkflowProviderService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.services.common.security.AccessControlService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.services.DesktopService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            class="org.eclipse.scout.rt.server.services.common.offline.OfflineDispatcherService">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.services.common.sql.DerbySqlService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.project.ProjectService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+   </extension>
+   <extension
+         name=""
+         point="org.eclipse.equinox.http.registry.servlets">
+      <servlet
+            alias="/process"
+            class="org.eclipse.scout.rt.server.ServiceTunnelServlet">
+         <init-param
+               name="min-version"
+               value="0.0.0">
+         </init-param>
+      </servlet>
+      <servlet
+            alias="/remotefiles"
+            class="org.eclipse.scout.rt.server.RemoteFileServlet">
+      </servlet>
+      <servlet
+            alias="/updatesite"
+            class="org.eclipse.scout.rt.server.RemoteFileServlet">
+         <init-param
+               name="folder"
+               value="/updatesite">
+         </init-param>
+      </servlet>
+      <servlet
+            alias="/"
+            class="org.eclipse.scout.rt.server.ResourceServlet">
+         <init-param
+               name="bundle-name"
+               value="ar.coop.arena.security.server">
+         </init-param>
+         <init-param
+               name="bundle-path"
+               value="/resources/html">
+         </init-param>
+      </servlet>
+   </extension>
+   <extension
+         name=""
+         point="org.eclipse.scout.http.servletfilter.filters">
+      <filter
+            aliases="/process /remotefiles /updatesite"
+            class="org.eclipse.scout.http.servletfilter.security.BasicSecurityFilter"
+            ranking="20">
+      </filter>
+      <filter
+            aliases="/process /remotefiles /updatesite"
+            class="org.eclipse.scout.http.servletfilter.security.AnonymousSecurityFilter"
+            ranking="30">
+      </filter>
+   </extension>
+   <extension
+         id="app"
+         name="Server Application"
+         point="org.eclipse.core.runtime.applications">
+      <application>
+         <run
+               class="ar.coop.arena.security.server.ServerApplication">
+         </run>
+      </application>
+   </extension>
+   <extension
+         id="product"
+         name=""
+         point="org.eclipse.core.runtime.products">
+      <product
+            name="security Server"
+            application="ar.coop.arena.security.server.app">
+         <property
+               name="appName"
+               value="security Server">
+         </property>
+      </product>
+   </extension>
+
+</plugin>
