@@ -17,10 +17,16 @@ public class DesktopFormData extends AbstractFormData {
     return getPropertyByClass(ProjectIdProperty.class);
   }
 
+  /**
+   * access method for property ProjectId.
+   */
   public Integer getProjectId() {
     return getProjectIdProperty().getValue();
   }
 
+  /**
+   * access method for property ProjectId.
+   */
   public void setProjectId(Integer projectId) {
     getProjectIdProperty().setValue(projectId);
   }
@@ -42,6 +48,9 @@ public class DesktopFormData extends AbstractFormData {
     public TargetsTree() {
     }
 
+    /**
+     * list of derived validation rules.
+     */
     @Override
     protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
       super.initValidationRules(ruleMap);

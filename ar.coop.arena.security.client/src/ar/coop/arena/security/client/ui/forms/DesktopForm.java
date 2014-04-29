@@ -14,6 +14,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
+import ar.coop.arena.security.client.target.ItemForm;
 import ar.coop.arena.security.client.target.TargetForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm.MainBox.TargetsTreeField;
 import ar.coop.arena.security.shared.services.DesktopFormData;
@@ -108,6 +109,31 @@ public class DesktopForm extends AbstractForm {
         }
 
         @Order(20.0)
+        public class AddItemMenu extends AbstractExtensibleMenu {
+
+          @Override
+          protected String getConfiguredText() {
+            return TEXTS.get("AddItem");
+          }
+
+          @Override
+          protected void execAction() throws ProcessingException {
+            ItemForm form = new ItemForm();
+            form.setProjectId(1);
+            String id = ((String) getSelectedNode().getPrimaryKey());
+            form.setTargetId(new Integer(id.substring(4).trim()));
+            form.startNew();
+          }
+
+          @Override
+          protected void execPrepareAction() throws ProcessingException {
+            String id = ((String) getSelectedNode().getPrimaryKey());
+            boolean activate = id.startsWith("tgt_");
+            setEnabled(activate);
+          }
+        }
+
+        @Order(30.0)
         public class ModifyTargetMenu extends AbstractExtensibleMenu {
 
           @Override
@@ -121,6 +147,11 @@ public class DesktopForm extends AbstractForm {
             if (id.startsWith("tgt_")) {
               TargetForm form = new TargetForm();
               form.setTargetNr(new Long(id.substring(4).trim()));
+              form.startModify();
+            }
+            else if (id.startsWith("it_")) {
+              ItemForm form = new ItemForm();
+              form.setItemNr(new Long(id.substring(3).trim()));
               form.startModify();
             }
           }

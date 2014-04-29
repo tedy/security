@@ -49,6 +49,11 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.target.ItemService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="ar.coop.arena.security.server.services.lookup.target.TargetTypeLookupService"
             session="ar.coop.arena.security.server.ServerSession">
       </service>
