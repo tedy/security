@@ -28,7 +28,12 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
   @Override
   protected String getConfiguredTitle() {
-    return TEXTS.get("ApplicationTitle");
+    return TEXTS.get("Security");
+  }
+
+  @Override
+  protected boolean getConfiguredTrayVisible() {
+    return true;
   }
 
   @Override

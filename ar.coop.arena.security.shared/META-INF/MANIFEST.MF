@@ -7,7 +7,9 @@ Bundle-Activator: ar.coop.arena.security.shared.Activator
 Export-Package: ar.coop.arena.security.shared,
  ar.coop.arena.security.shared.project,
  ar.coop.arena.security.shared.services,
- ar.coop.arena.security.shared.services.common.text
+ ar.coop.arena.security.shared.services.common.text,
+ ar.coop.arena.security.shared.services.lookup.target,
+ ar.coop.arena.security.shared.target
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.shared;visibility:=reexport
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

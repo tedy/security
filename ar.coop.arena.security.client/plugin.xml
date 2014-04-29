@@ -12,6 +12,18 @@
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="ar.coop.arena.security.shared.project.IProjectService">
       </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="ar.coop.arena.security.shared.target.ITargetService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="ar.coop.arena.security.shared.services.lookup.target.ITargetLookupService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="ar.coop.arena.security.shared.services.lookup.target.ITargetTypeLookupService">
+      </proxy>
    </extension>
 
 </plugin>

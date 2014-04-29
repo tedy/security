@@ -37,6 +37,21 @@
             class="ar.coop.arena.security.server.project.ProjectService"
             session="ar.coop.arena.security.server.ServerSession">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.target.TargetService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.services.lookup.target.TargetLookupService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.services.lookup.target.TargetTypeLookupService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
    </extension>
    <extension
          name=""

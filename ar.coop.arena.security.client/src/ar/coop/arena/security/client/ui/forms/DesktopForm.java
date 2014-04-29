@@ -8,16 +8,22 @@ import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.treebox.AbstractTreeBox;
+import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.basic.tree.AbstractExtensibleTree;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
+import ar.coop.arena.security.client.target.TargetForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm.MainBox.TargetsTreeField;
 import ar.coop.arena.security.shared.services.DesktopFormData;
 import ar.coop.arena.security.shared.services.IDesktopService;
+import ar.coop.arena.security.shared.services.lookup.target.TargetLookupCall;
 
 @FormData(value = DesktopFormData.class, sdkCommand = SdkCommand.CREATE)
 public class DesktopForm extends AbstractForm {
+
+  private Integer m_projectId;
 
   public DesktopForm() throws ProcessingException {
     super();
@@ -67,8 +73,59 @@ public class DesktopForm extends AbstractForm {
         return false;
       }
 
+      @Override
+      protected Class<? extends LookupCall> getConfiguredLookupCall() {
+        return TargetLookupCall.class;
+      }
+
       @Order(10.0)
       public class Tree extends AbstractExtensibleTree {
+
+        @Order(10.0)
+        public class AddTargetMenu extends AbstractExtensibleMenu {
+
+          @Override
+          protected String getConfiguredText() {
+            return TEXTS.get("AddTarget");
+          }
+
+          @Override
+          protected boolean getConfiguredEmptySpaceAction() {
+            return true;
+          }
+
+          @Override
+          protected boolean getConfiguredSingleSelectionAction() {
+            return false;
+          }
+
+          @Override
+          protected void execAction() throws ProcessingException {
+            TargetForm form = new TargetForm();
+            form.setProjectId(1l);
+            form.startNew();
+          }
+        }
+
+        @Order(20.0)
+        public class ModifyTargetMenu extends AbstractExtensibleMenu {
+
+          @Override
+          protected String getConfiguredText() {
+            return TEXTS.get("ModifyMenu");
+          }
+
+          @Override
+          protected void execAction() throws ProcessingException {
+            String id = ((String) getSelectedNode().getPrimaryKey());
+            if (id.startsWith("tgt_")) {
+              TargetForm form = new TargetForm();
+              form.setTargetNr(new Long(id.substring(4).trim()));
+              form.startModify();
+            }
+          }
+        }
+
       }
     }
   }
@@ -93,5 +150,15 @@ public class DesktopForm extends AbstractForm {
 
   public void startView() throws ProcessingException {
     startInternal(new ViewHandler());
+  }
+
+  @FormData
+  public Integer getProjectId() {
+    return m_projectId;
+  }
+
+  @FormData
+  public void setProjectId(Integer projectId) {
+    m_projectId = projectId;
   }
 }
