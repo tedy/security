@@ -26,4 +26,14 @@ public class DesktopService extends AbstractService implements IDesktopService {
         "       FRAMEWORKID" +
         " FROM  PROJECT");
   }
+
+  @Override
+  public Object[][] getTargetTableData(Long projectId) throws ProcessingException {
+    return SQL.select("" +
+        "SELECT NAME, " +
+        "       TARGETID" +
+        "       , PROJECTID" +
+        " FROM  TARGET" +
+        " WHERE projectId = " + projectId);
+  }
 }

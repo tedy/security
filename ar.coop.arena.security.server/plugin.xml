@@ -34,12 +34,22 @@
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.services.lookup.ProjectLookupService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="ar.coop.arena.security.server.project.ProjectService"
             session="ar.coop.arena.security.server.ServerSession">
       </service>
       <service
             factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
             class="ar.coop.arena.security.server.target.TargetService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.project.TargetsTreeService"
             session="ar.coop.arena.security.server.ServerSession">
       </service>
       <service

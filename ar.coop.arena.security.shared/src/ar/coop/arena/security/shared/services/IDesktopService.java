@@ -11,4 +11,6 @@ public interface IDesktopService extends IService {
   public DesktopFormData load(DesktopFormData formData) throws ProcessingException;
 
   Object[][] getProjectTableData() throws ProcessingException;
+
+  public Object[][] getTargetTableData(Long projectId) throws ProcessingException;
 }

@@ -10,6 +10,7 @@ Export-Package: ar.coop.arena.security.server,
  ar.coop.arena.security.server.services,
  ar.coop.arena.security.server.services.common.security,
  ar.coop.arena.security.server.services.common.sql,
+ ar.coop.arena.security.server.services.lookup,
  ar.coop.arena.security.server.services.lookup.target,
  ar.coop.arena.security.server.target
 Require-Bundle: org.eclipse.core.runtime,

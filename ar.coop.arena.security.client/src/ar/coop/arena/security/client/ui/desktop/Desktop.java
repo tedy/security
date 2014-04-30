@@ -8,6 +8,9 @@ import org.eclipse.scout.rt.client.ClientSyncJob;
 import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
+import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractFormToolButton;
+import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutlineViewButton;
+import org.eclipse.scout.rt.client.ui.desktop.outline.IOutline;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
@@ -19,11 +22,21 @@ import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
 import ar.coop.arena.security.shared.Icons;
+import ar.coop.arena.security.client.project.TargetsTreeForm;
+import ar.coop.arena.security.client.project.WIPForm;
+import ar.coop.arena.security.client.ui.desktop.outlines.ProjectOutline;
+import ar.coop.arena.security.client.ui.desktop.outlines.TargetsOutline;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
 
   public Desktop() {
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  protected Class<? extends IOutline>[] getConfiguredOutlines() {
+    return new Class[]{ProjectOutline.class, TargetsOutline.class};
   }
 
   @Override
@@ -42,9 +55,24 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     if (!UserAgentUtility.isDesktopDevice()) {
       return;
     }
-    DesktopForm desktopForm = new DesktopForm();
-    desktopForm.setIconId(Icons.EclipseScout);
-    desktopForm.startView();
+
+    // outline tree
+    /*DefaultOutlineTreeForm treeForm = new DefaultOutlineTreeForm();
+    treeForm.setIconId(Icons.EclipseScout);
+    treeForm.startView();
+
+    if (getAvailableOutlines().length > 0) {
+      setOutline(getAvailableOutlines()[0]);
+    }*/
+
+    /*    DesktopForm desktopForm = new DesktopForm();
+    //    desktopForm.setIconId(Icons.EclipseScout);
+        desktopForm.startView();*/
+
+    TargetsTreeForm targetsTreeForm = new TargetsTreeForm();
+    targetsTreeForm.startView();
+    WIPForm form = new WIPForm();
+    form.startModify();
   }
 
   @Order(10.0)
@@ -256,6 +284,21 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
+  @Order(20.0)
+  public class WIPTool extends AbstractFormToolButton {
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("WIP");
+    }
+
+    @Override
+    protected void execAction() throws ProcessingException {
+      WIPForm form = new WIPForm();
+      form.startModify();
+    }
+  }
+
   @Order(10.0)
   public class RefreshOutlineKeyStroke extends AbstractKeyStroke {
 
@@ -272,6 +315,30 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           page.reloadPage();
         }
       }
+    }
+  }
+
+  @Order(10.0)
+  public class ProjectOutlineViewButton extends AbstractOutlineViewButton {
+    public ProjectOutlineViewButton() {
+      super(Desktop.this, ProjectOutline.class);
+    }
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Project");
+    }
+  }
+
+  @Order(20.0)
+  public class TargetsOutlineViewButton extends AbstractOutlineViewButton {
+    public TargetsOutlineViewButton() {
+      super(Desktop.this, TargetsOutline.class);
+    }
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Targets");
     }
   }
 }
