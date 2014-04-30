@@ -14,7 +14,7 @@ public class TargetzzNodePage extends AbstractExtensiblePageWithNodes {
     //TODO [tedy] Auto-generated method stub.
   }
 
-  @Override
+//  @Override
   protected Object[][] execLoadTableData(SearchFilter filter) throws ProcessingException {
     return SERVICES.getService(IDesktopService.class).getTargetTableData(1l);
   }

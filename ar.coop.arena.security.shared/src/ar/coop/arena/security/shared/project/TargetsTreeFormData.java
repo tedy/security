@@ -5,7 +5,7 @@ import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
-import ar.coop.arena.security.shared.services.lookup.target.TargetsLookupCall;
+import ar.coop.arena.security.shared.services.lookup.target.TargetLookupCall;
 
 public class TargetsTreeFormData extends AbstractFormData {
   private static final long serialVersionUID = 1L;
@@ -54,7 +54,7 @@ public class TargetsTreeFormData extends AbstractFormData {
     @Override
     protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
       super.initValidationRules(ruleMap);
-      ruleMap.put(ValidationRule.LOOKUP_CALL, TargetsLookupCall.class);
+      ruleMap.put(ValidationRule.LOOKUP_CALL, TargetLookupCall.class);
     }
   }
 }

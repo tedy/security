@@ -1,7 +1,5 @@
 package ar.coop.arena.security.client.project;
 
-import java.math.BigInteger;
-
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
@@ -19,7 +17,7 @@ import org.eclipse.scout.service.SERVICES;
 import ar.coop.arena.security.client.project.TargetsTreeForm.MainBox.TargetsTreeField;
 import ar.coop.arena.security.shared.project.ITargetsTreeService;
 import ar.coop.arena.security.shared.project.TargetsTreeFormData;
-import ar.coop.arena.security.shared.services.lookup.target.TargetsLookupCall;
+import ar.coop.arena.security.shared.services.lookup.target.TargetLookupCall;
 
 @FormData(value = TargetsTreeFormData.class, sdkCommand = SdkCommand.CREATE)
 public class TargetsTreeForm extends AbstractForm {
@@ -89,7 +87,7 @@ public class TargetsTreeForm extends AbstractForm {
 
       @Override
       protected Class<? extends LookupCall> getConfiguredLookupCall() {
-        return TargetsLookupCall.class;
+        return TargetLookupCall.class;
       }
 
       @Order(10.0)
@@ -106,7 +104,7 @@ public class TargetsTreeForm extends AbstractForm {
           @Override
           protected void execAction() throws ProcessingException {
             ProjectForm form = new ProjectForm();
-            form.setProjectNr(new BigInteger("1"));
+            form.setProjectNr(new Long("1"));
             form.startModify();
           }
         }
