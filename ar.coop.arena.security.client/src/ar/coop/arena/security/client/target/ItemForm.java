@@ -10,14 +10,18 @@ import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.integerfield.AbstractIntegerField;
+import org.eclipse.scout.rt.client.ui.form.fields.smartfield.AbstractSmartField;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
+import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
 import ar.coop.arena.security.client.target.ItemForm.MainBox.CancelButton;
 import ar.coop.arena.security.client.target.ItemForm.MainBox.NameField;
 import ar.coop.arena.security.client.target.ItemForm.MainBox.OkButton;
 import ar.coop.arena.security.client.target.ItemForm.MainBox.PortField;
+import ar.coop.arena.security.client.target.ItemForm.MainBox.RiskField;
+import ar.coop.arena.security.shared.services.lookup.target.RiskLookupCall;
 import ar.coop.arena.security.shared.target.IItemService;
 import ar.coop.arena.security.shared.target.ItemFormData;
 import ar.coop.arena.security.shared.target.UpdateItemPermission;
@@ -76,6 +80,10 @@ public class ItemForm extends AbstractForm {
     return getFieldByClass(PortField.class);
   }
 
+  public RiskField getRiskField() {
+    return getFieldByClass(RiskField.class);
+  }
+
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
 
@@ -90,6 +98,21 @@ public class ItemForm extends AbstractForm {
     }
 
     @Order(10.0)
+    public class RiskField extends AbstractSmartField<Integer> {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Risk");
+      }
+
+      @Override
+      protected Class<? extends LookupCall> getConfiguredLookupCall() {
+        return RiskLookupCall.class;
+
+      }
+    }
+
+    @Order(20.0)
     public class PortField extends AbstractIntegerField {
 
       @Override
@@ -98,7 +121,7 @@ public class ItemForm extends AbstractForm {
       }
     }
 
-    @Order(20.0)
+    @Order(30.0)
     public class NameField extends AbstractStringField {
 
       @Override
@@ -107,11 +130,11 @@ public class ItemForm extends AbstractForm {
       }
     }
 
-    @Order(30.0)
+    @Order(40.0)
     public class OkButton extends AbstractOkButton {
     }
 
-    @Order(40.0)
+    @Order(50.0)
     public class CancelButton extends AbstractCancelButton {
     }
   }

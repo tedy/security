@@ -5,6 +5,8 @@ import org.eclipse.scout.rt.shared.data.form.ValidationRule;
 import org.eclipse.scout.rt.shared.data.form.fields.AbstractValueFieldData;
 import org.eclipse.scout.rt.shared.data.form.properties.AbstractPropertyData;
 
+import ar.coop.arena.security.shared.services.lookup.target.RiskLookupCall;
+
 public class ItemFormData extends AbstractFormData {
   private static final long serialVersionUID = 1L;
 
@@ -73,6 +75,10 @@ public class ItemFormData extends AbstractFormData {
     return getFieldByClass(Port.class);
   }
 
+  public Risk getRisk() {
+    return getFieldByClass(Risk.class);
+  }
+
   public class ItemNrProperty extends AbstractPropertyData<Long> {
     private static final long serialVersionUID = 1L;
 
@@ -114,6 +120,23 @@ public class ItemFormData extends AbstractFormData {
     private static final long serialVersionUID = 1L;
 
     public Port() {
+    }
+  }
+
+  public static class Risk extends AbstractValueFieldData<Integer> {
+    private static final long serialVersionUID = 1L;
+
+    public Risk() {
+    }
+
+    /**
+     * list of derived validation rules.
+     */
+    @Override
+    protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
+      super.initValidationRules(ruleMap);
+      ruleMap.put(ValidationRule.LOOKUP_CALL, RiskLookupCall.class);
+      ruleMap.put(ValidationRule.ZERO_NULL_EQUALITY, true);
     }
   }
 }

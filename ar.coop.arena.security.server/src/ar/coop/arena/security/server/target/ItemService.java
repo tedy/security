@@ -30,8 +30,8 @@ public class ItemService extends AbstractService implements IItemService {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
     SQL.insert("" +
-        "INSERT INTO TARGETITEM (PROJECTID, TARGETID, PORT, NAME) " +
-        "VALUES (:projectId, :targetId, :port, :name)"
+        "INSERT INTO TARGETITEM (PROJECTID, TARGETID, RISKID, PORT, NAME) " +
+        "VALUES (:projectId, :targetId, :risk, :port, :name)"
         , formData);
     return formData;
   }
@@ -42,10 +42,10 @@ public class ItemService extends AbstractService implements IItemService {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
     SQL.selectInto("" +
-        "SELECT PORT, NAME " +
+        "SELECT RISKID, PORT, NAME " +
         "FROM   TARGETITEM " +
         "WHERE  TARGETITEMID = :itemNr " +
-        "INTO   :port, :name"
+        "INTO   :risk, :port, :name"
         , formData);
     return formData;
   }
@@ -57,6 +57,7 @@ public class ItemService extends AbstractService implements IItemService {
     }
     SQL.update(
         "UPDATE TARGETITEM SET "
+            + " RISKID = :risk,"
             + " PORT = :port, " +
             "   NAME = :name " +
             "WHERE  TARGETITEMID = :itemNr", formData);
