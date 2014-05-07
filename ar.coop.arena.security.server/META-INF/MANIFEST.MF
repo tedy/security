@@ -7,6 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: ar.coop.arena.security.server.Activator
 Export-Package: ar.coop.arena.security.server,
  ar.coop.arena.security.server.project,
+ ar.coop.arena.security.server.runner,
  ar.coop.arena.security.server.services,
  ar.coop.arena.security.server.services.common.security,
  ar.coop.arena.security.server.services.common.sql,
