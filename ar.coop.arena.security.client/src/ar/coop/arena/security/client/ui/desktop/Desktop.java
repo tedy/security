@@ -17,6 +17,7 @@ import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
 import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.project.ProjectForm;
+import ar.coop.arena.security.client.runner.ViewerForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
 import ar.coop.arena.security.shared.Icons;
 
@@ -45,6 +46,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     DesktopForm desktopForm = new DesktopForm();
     desktopForm.setIconId(Icons.EclipseScout);
     desktopForm.startView();
+
+    ViewerForm viewerForm = new ViewerForm();
+//    desktopForm.setIconId(Icons.EclipseScout);
+    viewerForm.startModify();
   }
 
   @Order(10.0)

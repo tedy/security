@@ -67,6 +67,11 @@
             class="ar.coop.arena.security.server.runner.RunToolService"
             session="ar.coop.arena.security.server.ServerSession">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.runner.ViewerService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
    </extension>
    <extension
          name=""
@@ -133,8 +138,8 @@
          name=""
          point="org.eclipse.core.runtime.products">
       <product
-            name="security Server"
-            application="ar.coop.arena.security.server.app">
+            application="ar.coop.arena.security.server.app"
+            name="security Server">
          <property
                name="appName"
                value="security Server">

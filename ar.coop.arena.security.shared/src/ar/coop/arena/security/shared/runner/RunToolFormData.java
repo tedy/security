@@ -11,6 +11,24 @@ public class RunToolFormData extends AbstractFormData {
   public RunToolFormData() {
   }
 
+  public ResultProperty getResultProperty() {
+    return getPropertyByClass(ResultProperty.class);
+  }
+
+  /**
+   * access method for property Result.
+   */
+  public String getResult() {
+    return getResultProperty().getValue();
+  }
+
+  /**
+   * access method for property Result.
+   */
+  public void setResult(String result) {
+    getResultProperty().setValue(result);
+  }
+
   public ToolNrProperty getToolNrProperty() {
     return getPropertyByClass(ToolNrProperty.class);
   }
@@ -31,6 +49,13 @@ public class RunToolFormData extends AbstractFormData {
 
   public Command getCommand() {
     return getFieldByClass(Command.class);
+  }
+
+  public class ResultProperty extends AbstractPropertyData<String> {
+    private static final long serialVersionUID = 1L;
+
+    public ResultProperty() {
+    }
   }
 
   public class ToolNrProperty extends AbstractPropertyData<Long> {

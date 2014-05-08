@@ -14,6 +14,7 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.service.SERVICES;
 
+import ar.coop.arena.security.client.runner.RunToolForm;
 import ar.coop.arena.security.client.target.ItemForm;
 import ar.coop.arena.security.client.target.TargetForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm.MainBox.TargetsTreeField;
@@ -153,6 +154,40 @@ public class DesktopForm extends AbstractForm {
               ItemForm form = new ItemForm();
               form.setItemNr(new Long(id.substring(3).trim()));
               form.startModify();
+            }
+          }
+        }
+
+        @Order(40.0)
+        public class ToolsMenu extends AbstractExtensibleMenu {
+
+          @Override
+          protected String getConfiguredText() {
+            return TEXTS.get("ToolsMenu");
+          }
+
+          @Order(10.0)
+          public class RunCommandMenu extends AbstractExtensibleMenu {
+
+            @Override
+            protected String getConfiguredText() {
+              return TEXTS.get("RunCommand");
+            }
+
+            @Override
+            protected boolean getConfiguredEmptySpaceAction() {
+              return true;
+            }
+
+            @Override
+            protected boolean getConfiguredSingleSelectionAction() {
+              return false;
+            }
+
+            @Override
+            protected void execAction() throws ProcessingException {
+              RunToolForm form = new RunToolForm();
+              form.startNew();
             }
           }
         }

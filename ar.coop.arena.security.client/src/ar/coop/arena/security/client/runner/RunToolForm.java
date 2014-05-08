@@ -4,6 +4,7 @@ import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
@@ -24,6 +25,7 @@ import ar.coop.arena.security.shared.runner.UpdateRunToolPermission;
 public class RunToolForm extends AbstractForm {
 
   private Long toolNr;
+  private String m_result;
 
   public RunToolForm() throws ProcessingException {
     super();
@@ -127,6 +129,21 @@ public class RunToolForm extends AbstractForm {
       RunToolFormData formData = new RunToolFormData();
       exportFormData(formData);
       formData = service.create(formData);
+
+      IDesktop desktop = getDesktop();
+      ViewerForm viewerForm = desktop.findForm(ViewerForm.class);
+      //    desktopForm.setIconId(Icons.EclipseScout);
+      viewerForm.getViewerField().setValue(formData.getResult());
     }
+  }
+
+  @FormData
+  public String getResult() {
+    return m_result;
+  }
+
+  @FormData
+  public void setResult(String result) {
+    m_result = result;
   }
 }
