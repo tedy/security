@@ -8,6 +8,7 @@ import org.eclipse.scout.rt.client.ClientSyncJob;
 import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
+import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractFormToolButton;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
@@ -48,7 +49,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     desktopForm.startView();
 
     ViewerForm viewerForm = new ViewerForm();
-//    desktopForm.setIconId(Icons.EclipseScout);
+    //    desktopForm.setIconId(Icons.EclipseScout);
     viewerForm.startModify();
   }
 
@@ -262,6 +263,36 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   }
 
   @Order(10.0)
+  public class WIPTool extends AbstractFormToolButton {
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("WIP");
+    }
+
+    /*@Override
+    protected void execAction() throws ProcessingException {
+      WIPForm form = new WIPForm();
+      form.startModify();
+    }*/
+  }
+
+  @Order(20.0)
+  public class ViewerTool extends AbstractFormToolButton {
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Viewer");
+    }
+
+    @Override
+    protected void execAction() throws ProcessingException {
+      ViewerForm viewerForm = findForm(ViewerForm.class);
+      viewerForm.activate();
+    }
+  }
+
+  @Order(10.0)
   public class RefreshOutlineKeyStroke extends AbstractKeyStroke {
 
     @Override
@@ -279,4 +310,5 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       }
     }
   }
+
 }

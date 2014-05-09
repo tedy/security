@@ -137,8 +137,8 @@ public class RunToolForm extends AbstractForm {
 
       IDesktop desktop = getDesktop();
       ViewerForm viewerForm = desktop.findForm(ViewerForm.class);
-      //    desktopForm.setIconId(Icons.EclipseScout);
       viewerForm.getViewerField().setValue(formData.getResult());
+      viewerForm.activate();
     }
   }
 
