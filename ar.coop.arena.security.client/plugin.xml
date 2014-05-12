@@ -32,6 +32,18 @@
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="ar.coop.arena.security.shared.services.lookup.target.IRiskLookupService">
       </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="ar.coop.arena.security.shared.runner.IRunToolService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="ar.coop.arena.security.shared.runner.IViewerService">
+      </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="ar.coop.arena.security.shared.target.IWIPService">
+      </proxy>
    </extension>
 
 </plugin>
