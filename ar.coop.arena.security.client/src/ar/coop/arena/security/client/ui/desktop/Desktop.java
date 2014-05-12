@@ -10,6 +10,7 @@ import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractFormToolButton;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
+import org.eclipse.scout.rt.client.ui.form.IForm;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
 import org.eclipse.scout.rt.extension.client.ui.desktop.AbstractExtensibleDesktop;
@@ -19,6 +20,7 @@ import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.runner.ViewerForm;
+import ar.coop.arena.security.client.target.WIPForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
 import ar.coop.arena.security.shared.Icons;
 
@@ -48,9 +50,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     desktopForm.setIconId(Icons.EclipseScout);
     desktopForm.startView();
 
-    ViewerForm viewerForm = new ViewerForm();
-    //    desktopForm.setIconId(Icons.EclipseScout);
-    viewerForm.startModify();
+//    ViewerForm viewerForm = new ViewerForm();
+//    viewerForm.startModify();
+    WIPForm wipForm = new WIPForm();
+    wipForm.startModify();
   }
 
   @Order(10.0)
@@ -270,11 +273,18 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       return TEXTS.get("WIP");
     }
 
-    /*@Override
+    @Override
     protected void execAction() throws ProcessingException {
-      WIPForm form = new WIPForm();
-      form.startModify();
-    }*/
+      IForm form = findForm(WIPForm.class);
+      if (form == null) {
+        form = new WIPForm();
+        ((WIPForm) form).startModify();
+      }
+      form.activate();
+
+      form = findForm(ViewerForm.class);
+//      form.doClose();
+    }
   }
 
   @Order(20.0)
@@ -287,8 +297,12 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
     @Override
     protected void execAction() throws ProcessingException {
-      ViewerForm viewerForm = findForm(ViewerForm.class);
-      viewerForm.activate();
+      ViewerForm form = findForm(ViewerForm.class);
+      if (form == null) {
+        form = new ViewerForm();
+        form.startModify();
+      }
+      form.activate();
     }
   }
 

@@ -4,6 +4,7 @@ import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.basic.tree.ITreeNode;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
@@ -17,6 +18,7 @@ import org.eclipse.scout.service.SERVICES;
 import ar.coop.arena.security.client.runner.RunToolForm;
 import ar.coop.arena.security.client.target.ItemForm;
 import ar.coop.arena.security.client.target.TargetForm;
+import ar.coop.arena.security.client.target.WIPForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm.MainBox.TargetsTreeField;
 import ar.coop.arena.security.shared.services.DesktopFormData;
 import ar.coop.arena.security.shared.services.IDesktopService;
@@ -82,6 +84,35 @@ public class DesktopForm extends AbstractForm {
 
       @Order(10.0)
       public class Tree extends AbstractExtensibleTree {
+
+        @Override
+        protected void execNodeAction(ITreeNode node) throws ProcessingException {
+          int nodeType = 1;
+          Long nodeNr = 0l;
+          String id = ((String) getSelectedNode().getPrimaryKey());
+          if (id.startsWith("tgt_")) {
+            nodeType = 1;
+            nodeNr = new Long(id.substring(4).trim());
+          }
+          else if (id.startsWith("it_")) {
+            nodeType = 2;
+            nodeNr = new Long(id.substring(3).trim());
+          }
+//          form.getContentField().setValue(formData.getResult());
+//          form.activate();
+
+          WIPForm form = getDesktop().findForm(WIPForm.class);
+          if (form == null) {
+            form = new WIPForm();
+            form.setNodeType(nodeType);
+            form.setNodeNr(nodeNr);
+            form.startModify();
+          }
+
+          form.setNodeType(nodeType);
+          form.setNodeNr(nodeNr);
+          form.activate();
+        }
 
         @Order(10.0)
         public class AddTargetMenu extends AbstractExtensibleMenu {

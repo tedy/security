@@ -137,6 +137,10 @@ public class RunToolForm extends AbstractForm {
 
       IDesktop desktop = getDesktop();
       ViewerForm viewerForm = desktop.findForm(ViewerForm.class);
+      if (viewerForm == null) {
+        viewerForm = new ViewerForm();
+        viewerForm.startModify();
+      }
       viewerForm.getViewerField().setValue(formData.getResult());
       viewerForm.activate();
     }
