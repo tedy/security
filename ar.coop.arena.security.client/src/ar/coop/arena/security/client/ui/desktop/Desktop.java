@@ -21,6 +21,8 @@ import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.project.SelectProjectForm;
 import ar.coop.arena.security.client.runner.ViewerForm;
+import ar.coop.arena.security.client.target.ItemForm;
+import ar.coop.arena.security.client.target.TargetForm;
 import ar.coop.arena.security.client.target.WIPForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
 
@@ -52,8 +54,8 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     DesktopForm desktopForm = new DesktopForm();
     desktopForm.startView();
 
-//    ViewerForm viewerForm = new ViewerForm();
-//    viewerForm.startModify();
+    //    ViewerForm viewerForm = new ViewerForm();
+    //    viewerForm.startModify();
     WIPForm wipForm = new WIPForm();
     wipForm.startModify();
   }
@@ -193,6 +195,20 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected String getConfiguredText() {
         return TEXTS.get("AddMenu");
       }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        TargetForm form = new TargetForm();
+        form.setProjectId(desktopForm.getProjectId());
+        form.startNew();
+
+        form.waitFor();
+        if (form.isFormStored()) {
+          desktopForm.refresh();
+          desktopForm.activate();
+        }
+      }
     }
 
     @Order(20.0)
@@ -201,6 +217,33 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       @Override
       protected String getConfiguredText() {
         return TEXTS.get("ModifyMenu");
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        String id = desktopForm.getSelectedNode();
+        if (!"".equals(id)) {
+          IForm iform = new TargetForm();
+          if (id.startsWith("tgt_")) {
+            TargetForm form = (TargetForm) iform;//new TargetForm();
+            form.setTargetNr(new Long(id.substring(4).trim()));
+            form.startModify();
+            //              iform = form;
+          }
+          else if (id.startsWith("it_")) {
+            ItemForm form = new ItemForm();
+            form.setItemNr(new Long(id.substring(3).trim()));
+            form.startModify();
+            iform = form;
+          }
+
+          iform.waitFor();
+          if (iform.isFormStored()) {
+            desktopForm.refresh();
+            desktopForm.activate();
+          }
+        }
       }
     }
 
@@ -292,7 +335,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       form.activate();
 
       form = findForm(ViewerForm.class);
-//      form.doClose();
+      //      form.doClose();
     }
   }
 

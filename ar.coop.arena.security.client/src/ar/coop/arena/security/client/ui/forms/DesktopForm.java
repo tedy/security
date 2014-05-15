@@ -133,6 +133,7 @@ public class DesktopForm extends AbstractForm {
             form.startModify();
           }
           form.activate();
+//          getForm().activate();
         }
 
         @Override
@@ -168,6 +169,7 @@ public class DesktopForm extends AbstractForm {
             form.waitFor();
             if (form.isFormStored()) {
               refresh();
+              activate();
             }
           }
         }
@@ -215,7 +217,7 @@ public class DesktopForm extends AbstractForm {
             String id = ((String) getSelectedNode().getPrimaryKey());
             IForm iform = new TargetForm();
             if (id.startsWith("tgt_")) {
-              TargetForm form = (TargetForm) iform;//new TargetForm();
+              TargetForm form = (TargetForm) iform;
               form.setTargetNr(new Long(id.substring(4).trim()));
               form.startModify();
               //              iform = form;
@@ -228,9 +230,9 @@ public class DesktopForm extends AbstractForm {
             }
 
             iform.waitFor();
-
             if (iform.isFormStored()) {
               refresh();
+              activate();
             }
           }
         }
@@ -302,6 +304,15 @@ public class DesktopForm extends AbstractForm {
   @FormData
   public void setProjectId(Integer projectId) {
     m_projectId = projectId;
+  }
+
+  public String getSelectedNode() {
+    TargetsTreeField tree = (TargetsTreeField) getFieldByClass(TargetsTreeField.class);
+    String id = "";
+    if (tree.getTree().getSelectedNode() != null) {
+      id = (String) tree.getTree().getSelectedNode().getPrimaryKey();
+    }
+    return id;
   }
 
   public void refresh() throws ProcessingException {
