@@ -11,14 +11,13 @@ public class TargetLookupService extends AbstractSqlLookupService implements ITa
     return "SELECT 'tgt_'||CAST (TARGETID AS CHAR), NAME "
         + " , '' AS ICONID, ''AS tooltip, 'F0F0F0', '404040', 'NULL' as font, 1, 'NULL', 1 "
         + " FROM  TARGET "
-        //        + " WHERE PROJECTID=1"
+        + " WHERE PROJECTID = :projectId"
         + " UNION "
         + " SELECT 'it_'||CAST(TARGETITEMID AS CHAR), CAST (PORT AS CHAR(5)) || '  ' || NAME "
         + " , PATH AS ICONID, ''AS tooltip, 'F0F0F0', '404040', 'NULL' as font, 1, 'tgt_'||CAST (TARGETID AS CHAR), 1 "
         + " FROM TARGETITEM "
         + " LEFT JOIN RISK ON (TARGETITEM.RISKID=RISK.RISKID) "
         + " LEFT JOIN ICONS ON (RISK.ICONID=ICONS.ICONID)"
-    //        + " WHERE PROJECTID=1"
-    ;
+        + " WHERE PROJECTID = :projectId";
   }
 }

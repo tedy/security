@@ -19,10 +19,10 @@ import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
 import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.project.ProjectForm;
+import ar.coop.arena.security.client.project.SelectProjectForm;
 import ar.coop.arena.security.client.runner.ViewerForm;
 import ar.coop.arena.security.client.target.WIPForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
-import ar.coop.arena.security.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
@@ -46,8 +46,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     if (!UserAgentUtility.isDesktopDevice()) {
       return;
     }
+    SelectProjectForm selectProjectForm = new SelectProjectForm();
+    selectProjectForm.startModify();
+
     DesktopForm desktopForm = new DesktopForm();
-    desktopForm.setIconId(Icons.EclipseScout);
     desktopForm.startView();
 
 //    ViewerForm viewerForm = new ViewerForm();
@@ -89,6 +91,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected String getConfiguredText() {
         return TEXTS.get("LoadMenu");
       }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        SelectProjectForm form = new SelectProjectForm();
+        form.startModify();
+      }
+
     }
 
     @Order(30.0)

@@ -53,6 +53,14 @@ public class WIPForm extends AbstractForm {
   }
 
   @Override
+  protected void execDataChanged(Object... dataTypes) throws ProcessingException {
+    //TODO [tedy] Auto-generated method stub.
+    for (Object object : dataTypes) {
+      System.out.println(object);
+    }
+  }
+
+  @Override
   protected void execFormActivated() throws ProcessingException {
     ((ModifyHandler) getHandler()).execLoad();
   }

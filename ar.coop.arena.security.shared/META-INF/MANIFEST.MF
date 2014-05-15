@@ -6,6 +6,7 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: ar.coop.arena.security.shared.Activator
 Export-Package: ar.coop.arena.security.shared,
  ar.coop.arena.security.shared.project,
+ ar.coop.arena.security.shared.project.services.lookup,
  ar.coop.arena.security.shared.runner,
  ar.coop.arena.security.shared.services,
  ar.coop.arena.security.shared.services.common.text,

@@ -7,6 +7,7 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.basic.tree.ITreeNode;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.IForm;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.treebox.AbstractTreeBox;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
@@ -82,14 +83,35 @@ public class DesktopForm extends AbstractForm {
         return TargetLookupCall.class;
       }
 
+      @Override
+      protected void execPrepareLookup(LookupCall call, ITreeNode parent) throws ProcessingException {
+        TargetLookupCall lookupCall = (TargetLookupCall) call;
+        lookupCall.setProjectId(getProjectId());
+      }
+
       @Order(10.0)
       public class Tree extends AbstractExtensibleTree {
 
         @Override
-        protected void execNodeAction(ITreeNode node) throws ProcessingException {
+        protected boolean getConfiguredDragEnabled() {
+          return true;
+        }
+
+        @Override
+        protected boolean getConfiguredScrollToSelection() {
+          return true;
+        }
+
+        /*@Override
+        protected void execNodesSelected(TreeEvent e) throws ProcessingException {
+          String id = ((String) getSelectedNode().getPrimaryKey());
+          showWIP(id);
+        }*/
+
+        private void showWIP(String id) throws ProcessingException {
           int nodeType = 1;
           Long nodeNr = 0l;
-          String id = ((String) getSelectedNode().getPrimaryKey());
+//          String id = ((String) getSelectedNode().getPrimaryKey());
           if (id.startsWith("tgt_")) {
             nodeType = 1;
             nodeNr = new Long(id.substring(4).trim());
@@ -98,20 +120,25 @@ public class DesktopForm extends AbstractForm {
             nodeType = 2;
             nodeNr = new Long(id.substring(3).trim());
           }
-//          form.getContentField().setValue(formData.getResult());
-//          form.activate();
+          //          form.getContentField().setValue(formData.getResult());
+          //          form.activate();
 
           WIPForm form = getDesktop().findForm(WIPForm.class);
           if (form == null) {
             form = new WIPForm();
-            form.setNodeType(nodeType);
-            form.setNodeNr(nodeNr);
-            form.startModify();
           }
-
           form.setNodeType(nodeType);
           form.setNodeNr(nodeNr);
+          if (!form.isShowing()) {
+            form.startModify();
+          }
           form.activate();
+        }
+
+        @Override
+        protected void execNodeClick(ITreeNode node) throws ProcessingException {
+          String id = ((String) node.getPrimaryKey());
+          showWIP(id);
         }
 
         @Order(10.0)
@@ -135,8 +162,13 @@ public class DesktopForm extends AbstractForm {
           @Override
           protected void execAction() throws ProcessingException {
             TargetForm form = new TargetForm();
-            form.setProjectId(1l);
+            form.setProjectId(getProjectId());
             form.startNew();
+
+            form.waitFor();
+            if (form.isFormStored()) {
+              refresh();
+            }
           }
         }
 
@@ -155,6 +187,11 @@ public class DesktopForm extends AbstractForm {
             String id = ((String) getSelectedNode().getPrimaryKey());
             form.setTargetId(new Integer(id.substring(4).trim()));
             form.startNew();
+
+            form.waitFor();
+            if (form.isFormStored()) {
+              refresh();
+            }
           }
 
           @Override
@@ -176,15 +213,24 @@ public class DesktopForm extends AbstractForm {
           @Override
           protected void execAction() throws ProcessingException {
             String id = ((String) getSelectedNode().getPrimaryKey());
+            IForm iform = new TargetForm();
             if (id.startsWith("tgt_")) {
-              TargetForm form = new TargetForm();
+              TargetForm form = (TargetForm) iform;//new TargetForm();
               form.setTargetNr(new Long(id.substring(4).trim()));
               form.startModify();
+              //              iform = form;
             }
             else if (id.startsWith("it_")) {
               ItemForm form = new ItemForm();
               form.setItemNr(new Long(id.substring(3).trim()));
               form.startModify();
+              iform = form;
+            }
+
+            iform.waitFor();
+
+            if (iform.isFormStored()) {
+              refresh();
             }
           }
         }
@@ -236,7 +282,6 @@ public class DesktopForm extends AbstractForm {
       exportFormData(formData);
       formData = service.load(formData);
       importFormData(formData);
-
     }
   }
 
@@ -257,5 +302,9 @@ public class DesktopForm extends AbstractForm {
   @FormData
   public void setProjectId(Integer projectId) {
     m_projectId = projectId;
+  }
+
+  public void refresh() throws ProcessingException {
+    getTargetsTreeField().loadRootNode();
   }
 }

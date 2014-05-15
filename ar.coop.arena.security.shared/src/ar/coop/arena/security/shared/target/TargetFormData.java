@@ -20,14 +20,14 @@ public class TargetFormData extends AbstractFormData {
   /**
    * access method for property ProjectId.
    */
-  public Long getProjectId() {
+  public Integer getProjectId() {
     return getProjectIdProperty().getValue();
   }
 
   /**
    * access method for property ProjectId.
    */
-  public void setProjectId(Long projectId) {
+  public void setProjectId(Integer projectId) {
     getProjectIdProperty().setValue(projectId);
   }
 
@@ -57,7 +57,7 @@ public class TargetFormData extends AbstractFormData {
     return getFieldByClass(TargetType.class);
   }
 
-  public class ProjectIdProperty extends AbstractPropertyData<Long> {
+  public class ProjectIdProperty extends AbstractPropertyData<Integer> {
     private static final long serialVersionUID = 1L;
 
     public ProjectIdProperty() {
