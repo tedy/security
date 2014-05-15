@@ -45,7 +45,7 @@ public class RunToolService extends AbstractService implements IRunToolService {
       System.out.println("Here is the standard output of the command:\n");
       while ((s = stdInput.readLine()) != null) {
         result.append(s);
-        result.append("\n");
+        result.append("\n<br>");
       }
       formData.setResult(result.toString());
       System.out.println(result.toString());
