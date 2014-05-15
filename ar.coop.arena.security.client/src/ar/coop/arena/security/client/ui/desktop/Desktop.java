@@ -48,14 +48,14 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     if (!UserAgentUtility.isDesktopDevice()) {
       return;
     }
-    SelectProjectForm selectProjectForm = new SelectProjectForm();
-    selectProjectForm.startModify();
+    /*SelectProjectForm selectProjectForm = new SelectProjectForm();
+    selectProjectForm.startModify();*/
 
     DesktopForm desktopForm = new DesktopForm();
     desktopForm.startView();
 
-    //    ViewerForm viewerForm = new ViewerForm();
-    //    viewerForm.startModify();
+    /*ViewerForm viewerForm = new ViewerForm();
+    viewerForm.startModify();*/
     WIPForm wipForm = new WIPForm();
     wipForm.startModify();
   }

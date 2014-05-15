@@ -9,7 +9,6 @@ import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.datefield.AbstractDateField;
-import org.eclipse.scout.rt.client.ui.form.fields.filechooserfield.AbstractFileChooserField;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.stringfield.AbstractStringField;
 import org.eclipse.scout.rt.shared.TEXTS;
@@ -22,7 +21,6 @@ import ar.coop.arena.security.client.project.ProjectForm.MainBox.EndDateField;
 import ar.coop.arena.security.client.project.ProjectForm.MainBox.NameField;
 import ar.coop.arena.security.client.project.ProjectForm.MainBox.OkButton;
 import ar.coop.arena.security.client.project.ProjectForm.MainBox.StartDateField;
-import ar.coop.arena.security.client.project.ProjectForm.MainBox.WorkDirField;
 import ar.coop.arena.security.shared.project.IProjectService;
 import ar.coop.arena.security.shared.project.ProjectFormData;
 import ar.coop.arena.security.shared.project.UpdateProjectPermission;
@@ -91,9 +89,9 @@ public class ProjectForm extends AbstractForm {
     return getFieldByClass(StartDateField.class);
   }
 
-  public WorkDirField getWorkDirField() {
+  /*public WorkDirField getWorkDirField() {
     return getFieldByClass(WorkDirField.class);
-  }
+  }*/
 
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
@@ -153,14 +151,14 @@ public class ProjectForm extends AbstractForm {
       }
     }
 
-    @Order(60.0)
+    /*@Order(60.0)
     public class WorkDirField extends AbstractFileChooserField {
 
       @Override
       protected String getConfiguredLabel() {
         return TEXTS.get("WorkDir");
       }
-    }
+    }*/
 
     @Order(70.0)
     public class OkButton extends AbstractOkButton {

@@ -51,10 +51,6 @@ public class ProjectFormData extends AbstractFormData {
     return getFieldByClass(StartDate.class);
   }
 
-  public WorkDir getWorkDir() {
-    return getFieldByClass(WorkDir.class);
-  }
-
   public class ProjectNrProperty extends AbstractPropertyData<Long> {
     private static final long serialVersionUID = 1L;
 
@@ -121,22 +117,6 @@ public class ProjectFormData extends AbstractFormData {
     private static final long serialVersionUID = 1L;
 
     public StartDate() {
-    }
-  }
-
-  public static class WorkDir extends AbstractValueFieldData<String> {
-    private static final long serialVersionUID = 1L;
-
-    public WorkDir() {
-    }
-
-    /**
-     * list of derived validation rules.
-     */
-    @Override
-    protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
-      super.initValidationRules(ruleMap);
-      ruleMap.put(ValidationRule.MAX_LENGTH, 4000);
     }
   }
 }

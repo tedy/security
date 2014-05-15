@@ -29,7 +29,17 @@ public class ProjectService extends AbstractService implements IProjectService {
     if (!ACCESS.check(new CreateProjectPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    //TODO [Piojo] business logic here.
+    SQL.selectInto("SELECT MAX(PROJECTID)+1 FROM PROJECT " +
+        //        "WHERE PROJECTID = :projectNr " +
+        "INTO :projectNr", formData);
+    SQL.insert("" +
+        "INSERT INTO PROJECT (PROJECTID, NAME, CUSTOMER, STARTDATE, ENDDATE, AUTHOR"
+        //        + ", WORKDIR, FRAMEWORKID, VERSION"
+        + ") " +
+        "VALUES (:projectNr, :name, :customer, :startDate, :endDate, :author"
+        //        + ", :workdir, :fremeworkId, :version"
+        + ")"
+        , formData);
     return formData;
   }
 
@@ -52,7 +62,11 @@ public class ProjectService extends AbstractService implements IProjectService {
     if (!ACCESS.check(new UpdateProjectPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    //TODO [Piojo] business logic here
+    SQL.update(
+        "UPDATE PROJECT SET" +
+            "   NAME = :name," +
+            "   CUSTOMER = :customer " +
+            " WHERE PROJECTID = :projectNr", formData);
     return formData;
   }
 }
