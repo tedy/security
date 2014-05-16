@@ -103,6 +103,26 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
 
     @Order(30.0)
+    public class ModifyProjectMenu extends AbstractExtensibleMenu {
+
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("ModifyMenu");
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        /*DefaultWizardContainerForm form = new DefaultWizardContainerForm(new ProjectWizard());
+        form.startWizard();*/
+
+        ProjectForm form = new ProjectForm();
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        form.setProjectNr(desktopForm.getProjectId().longValue());
+        form.startModify();
+      }
+    }
+
+    @Order(40.0)
     public class SaveProjectMenu extends AbstractExtensibleMenu {
 
       @Override
@@ -111,7 +131,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       }
     }
 
-    @Order(40.0)
+    @Order(50.0)
     public class ExitMenu extends AbstractMenu {
 
       @Override

@@ -48,11 +48,12 @@ public class ProjectService extends AbstractService implements IProjectService {
     if (!ACCESS.check(new ReadProjectPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    SQL.selectInto("SELECT NAME, CUSTOMER " +
-        "FROM PROJECT " +
-        "WHERE PROJECTID = :projectNr " +
-        "INTO :name," +
-        "     :customer"
+    SQL.selectInto("SELECT NAME, CUSTOMER, STARTDATE, ENDDATE, AUTHOR "
+        //        + ", WORKDIR, FRAMEWORKID, VERSION"
+        + " FROM PROJECT "
+        + " WHERE PROJECTID = :projectNr "
+        + " INTO :name, :customer, :startDate, :endDate, :author "
+        //        + ", :workdir, :fremeworkId, :version"
         , formData);
     return formData;
   }
@@ -62,11 +63,14 @@ public class ProjectService extends AbstractService implements IProjectService {
     if (!ACCESS.check(new UpdateProjectPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    SQL.update(
-        "UPDATE PROJECT SET" +
-            "   NAME = :name," +
-            "   CUSTOMER = :customer " +
-            " WHERE PROJECTID = :projectNr", formData);
+    SQL.update("UPDATE PROJECT SET"
+        + " NAME = :name,"
+        + " CUSTOMER = :customer, "
+        + " STARTDATE = :startDate, "
+        + " ENDDATE = :endDate, "
+        + " AUTHOR = :author "
+        //        + ", :workdir, :fremeworkId, :version"
+        + " WHERE PROJECTID = :projectNr", formData);
     return formData;
   }
 }
