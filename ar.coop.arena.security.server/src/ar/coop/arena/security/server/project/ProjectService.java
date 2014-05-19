@@ -29,14 +29,14 @@ public class ProjectService extends AbstractService implements IProjectService {
     if (!ACCESS.check(new CreateProjectPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    SQL.selectInto("SELECT MAX(PROJECTID)+1 FROM PROJECT " +
+    /*SQL.selectInto("SELECT MAX(PROJECTID)+1 FROM PROJECT " +
         //        "WHERE PROJECTID = :projectNr " +
-        "INTO :projectNr", formData);
+        "INTO :projectNr", formData);*/
     SQL.insert("" +
-        "INSERT INTO PROJECT (PROJECTID, NAME, CUSTOMER, STARTDATE, ENDDATE, AUTHOR"
+        "INSERT INTO PROJECT (NAME, CUSTOMER, STARTDATE, ENDDATE, AUTHOR"
         //        + ", WORKDIR, FRAMEWORKID, VERSION"
         + ") " +
-        "VALUES (:projectNr, :name, :customer, :startDate, :endDate, :author"
+        "VALUES (:name, :customer, :startDate, :endDate, :author"
         //        + ", :workdir, :fremeworkId, :version"
         + ")"
         , formData);
