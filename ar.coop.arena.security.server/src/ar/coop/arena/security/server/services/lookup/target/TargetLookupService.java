@@ -8,13 +8,13 @@ public class TargetLookupService extends AbstractSqlLookupService implements ITa
 
   @Override
   protected String getConfiguredSqlSelect() {
-    return "SELECT 'tgt_'||CAST (TARGETID AS CHAR), NAME "
+    return "SELECT TRIM(CAST(TARGETID AS CHAR(7))), NAME "
         + " , '' AS ICONID, ''AS tooltip, 'F0F0F0', '404040', 'NULL' as font, 1, 'NULL', 1 "
         + " FROM  TARGET "
         + " WHERE PROJECTID = :projectId"
         + " UNION "
-        + " SELECT 'it_'||CAST(TARGETITEMID AS CHAR), CAST (PORT AS CHAR(5)) || '  ' || NAME "
-        + " , PATH AS ICONID, ''AS tooltip, 'F0F0F0', '404040', 'NULL' as font, 1, 'tgt_'||CAST (TARGETID AS CHAR), 1 "
+        + " SELECT TRIM(CAST(TARGETID AS CHAR(7)))||'_'||TRIM(CAST(TARGETITEMID AS CHAR(7))), CAST (PORT AS CHAR(5)) || '  ' || NAME "
+        + " , PATH AS ICONID, ''AS tooltip, 'F0F0F0', '404040', 'NULL' as font, 1, TRIM(CAST(TARGETID AS CHAR(7))), 1 "
         + " FROM TARGETITEM "
         + " LEFT JOIN RISK ON (TARGETITEM.RISKID=RISK.RISKID) "
         + " LEFT JOIN ICONS ON (RISK.ICONID=ICONS.ICONID)"

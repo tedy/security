@@ -21,7 +21,6 @@ import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.project.SelectProjectForm;
 import ar.coop.arena.security.client.runner.ViewerForm;
-import ar.coop.arena.security.client.target.ItemForm;
 import ar.coop.arena.security.client.target.TargetForm;
 import ar.coop.arena.security.client.target.WIPForm;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
@@ -242,39 +241,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       @Override
       protected void execAction() throws ProcessingException {
         DesktopForm desktopForm = findForm(DesktopForm.class);
-        String id = desktopForm.getSelectedNode();
-        if (!"".equals(id)) {
-          IForm iform = new TargetForm();
-          if (id.startsWith("tgt_")) {
-            TargetForm form = (TargetForm) iform;//new TargetForm();
-            form.setTargetNr(new Long(id.substring(4).trim()));
-            form.startModify();
-            //              iform = form;
-          }
-          else if (id.startsWith("it_")) {
-            ItemForm form = new ItemForm();
-            form.setItemNr(new Long(id.substring(3).trim()));
-            form.startModify();
-            iform = form;
-          }
-
-          iform.waitFor();
-          if (iform.isFormStored()) {
-            desktopForm.refresh();
-            desktopForm.activate();
-          }
-        }
+        desktopForm.editNode();
       }
     }
 
-    @Order(30.0)
-    public class RemoveMenu extends AbstractExtensibleMenu {
-
-      @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("RemoveMenu");
-      }
-    }
   }
 
   @Order(40.0)

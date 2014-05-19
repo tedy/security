@@ -108,20 +108,24 @@ public class DesktopForm extends AbstractForm {
           showWIP(id);
         }*/
 
+        @Override
+        protected void execNodeClick(ITreeNode node) throws ProcessingException {
+          String id = ((String) node.getPrimaryKey());
+          showWIP(id);
+        }
+
         private void showWIP(String id) throws ProcessingException {
           int nodeType = 1;
           Long nodeNr = 0l;
-//          String id = ((String) getSelectedNode().getPrimaryKey());
-          if (id.startsWith("tgt_")) {
+          if (id.indexOf("_") == -1) {
             nodeType = 1;
-            nodeNr = new Long(id.substring(4).trim());
+            nodeNr = new Long(id);
           }
-          else if (id.startsWith("it_")) {
+          else if (id.indexOf("_") >= 0) {
             nodeType = 2;
-            nodeNr = new Long(id.substring(3).trim());
+            nodeNr = new Long(id.substring(id.indexOf("_") + 1));
           }
           //          form.getContentField().setValue(formData.getResult());
-          //          form.activate();
 
           WIPForm form = getDesktop().findForm(WIPForm.class);
           if (form == null) {
@@ -133,13 +137,7 @@ public class DesktopForm extends AbstractForm {
             form.startModify();
           }
           form.activate();
-//          getForm().activate();
-        }
-
-        @Override
-        protected void execNodeClick(ITreeNode node) throws ProcessingException {
-          String id = ((String) node.getPrimaryKey());
-          showWIP(id);
+          //          getForm().activate();
         }
 
         @Order(10.0)
@@ -172,6 +170,13 @@ public class DesktopForm extends AbstractForm {
               activate();
             }
           }
+
+          @Override
+          protected void execPrepareAction() throws ProcessingException {
+            DesktopForm desktopForm = (DesktopForm) getForm();
+            boolean activate = (desktopForm.getProjectId() != null);
+            setEnabled(activate);
+          }
         }
 
         @Order(20.0)
@@ -185,9 +190,9 @@ public class DesktopForm extends AbstractForm {
           @Override
           protected void execAction() throws ProcessingException {
             ItemForm form = new ItemForm();
-            form.setProjectId(1);
+            form.setProjectId(getProjectId());
             String id = ((String) getSelectedNode().getPrimaryKey());
-            form.setTargetId(new Integer(id.substring(4).trim()));
+            form.setTargetId(new Integer(id));
             form.startNew();
 
             form.waitFor();
@@ -199,7 +204,7 @@ public class DesktopForm extends AbstractForm {
           @Override
           protected void execPrepareAction() throws ProcessingException {
             String id = ((String) getSelectedNode().getPrimaryKey());
-            boolean activate = id.startsWith("tgt_");
+            boolean activate = (id.indexOf("_") == -1);
             setEnabled(activate);
           }
         }
@@ -214,31 +219,17 @@ public class DesktopForm extends AbstractForm {
 
           @Override
           protected void execAction() throws ProcessingException {
-            String id = ((String) getSelectedNode().getPrimaryKey());
-            IForm iform = new TargetForm();
-            if (id.startsWith("tgt_")) {
-              TargetForm form = (TargetForm) iform;
-              form.setTargetNr(new Long(id.substring(4).trim()));
-              form.startModify();
-              //              iform = form;
-            }
-            else if (id.startsWith("it_")) {
-              ItemForm form = new ItemForm();
-              form.setItemNr(new Long(id.substring(3).trim()));
-              form.startModify();
-              iform = form;
-            }
-
-            iform.waitFor();
-            if (iform.isFormStored()) {
-              refresh();
-              activate();
-            }
+            editNode();
           }
         }
 
         @Order(40.0)
         public class ToolsMenu extends AbstractExtensibleMenu {
+
+          @Override
+          protected boolean getConfiguredEmptySpaceAction() {
+            return true;
+          }
 
           @Override
           protected String getConfiguredText() {
@@ -304,6 +295,31 @@ public class DesktopForm extends AbstractForm {
   @FormData
   public void setProjectId(Integer projectId) {
     m_projectId = projectId;
+  }
+
+  public void editNode() throws ProcessingException {
+    String id = getSelectedNode();
+    if (!"".equals(id)) {
+      IForm iform = new TargetForm();
+      if (id.indexOf("_") == -1) {//Targets
+        TargetForm form = (TargetForm) iform;
+        form.setTargetNr(new Long(id));
+        form.startModify();
+        //iform = form;
+      }
+      else if (id.indexOf("_") >= 0) {//Items
+        ItemForm form = new ItemForm();
+        form.setItemNr(new Long(id.substring(id.indexOf("_") + 1)));
+        form.startModify();
+        iform = form;
+      }
+
+      iform.waitFor();
+      if (iform.isFormStored()) {
+        refresh();
+        activate();
+      }
+    }
   }
 
   public String getSelectedNode() {
