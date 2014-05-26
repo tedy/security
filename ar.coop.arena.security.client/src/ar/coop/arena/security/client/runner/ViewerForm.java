@@ -1,16 +1,23 @@
 package ar.coop.arena.security.client.runner;
 
+import org.eclipse.scout.commons.annotations.ConfigOperation;
+import org.eclipse.scout.commons.annotations.ConfigProperty;
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.dnd.TextTransferObject;
+import org.eclipse.scout.commons.dnd.TransferObject;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.IDNDSupport;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.htmlfield.AbstractHtmlField;
+import org.eclipse.scout.rt.client.ui.form.fields.textfield.AbstractTextField;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.service.SERVICES;
 
+import ar.coop.arena.security.client.runner.ViewerForm.MainBox.ViewerDNDField;
 import ar.coop.arena.security.client.runner.ViewerForm.MainBox.ViewerField;
 import ar.coop.arena.security.shared.runner.IViewerService;
 import ar.coop.arena.security.shared.runner.UpdateViewerPermission;
@@ -64,8 +71,51 @@ public class ViewerForm extends AbstractForm {
       return false;
     }
 
-    @Order(20.0)
+    @Order(10.0)
     public class ViewerField extends AbstractHtmlField {
+
+      @ConfigProperty(ConfigProperty.DRAG_AND_DROP_TYPE)
+      @Order(10)
+      // @Override
+      protected int getConfiguredDragType() {
+        return IDNDSupport.TYPE_TEXT_TRANSFER | IDNDSupport.TYPE_JAVA_ELEMENT_TRANSFER;
+      }
+
+      @ConfigOperation
+      @Order(20)
+      protected TransferObject execDrag(String iText) throws ProcessingException {
+        System.out.println(iText);
+        return null;
+      }
+
+      @Override
+      protected int getConfiguredGridH() {
+        return 10;
+      }
+
+      @Override
+      protected boolean getConfiguredHtmlEditor() {
+        return true;
+      }
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Viewer");
+      }
+
+      @Override
+      protected boolean getConfiguredLabelVisible() {
+        return false;
+      }
+
+      @Override
+      protected boolean getConfiguredScrollBarEnabled() {
+        return true;
+      }
+    }
+
+    @Order(20.0)
+    public class ViewerDNDField extends AbstractTextField {
 
       @Override
       protected int getConfiguredGridH() {
@@ -83,9 +133,28 @@ public class ViewerForm extends AbstractForm {
       }
 
       @Override
-      protected boolean getConfiguredScrollBarEnabled() {
+      protected boolean getConfiguredMultilineText() {
         return true;
       }
+
+      @Override
+      protected boolean getConfiguredWrapText() {
+        return true;
+      }
+
+      @ConfigProperty(ConfigProperty.DRAG_AND_DROP_TYPE)
+      @Override
+      protected int getConfiguredDragType() {
+        return TYPE_TEXT_TRANSFER | TYPE_JAVA_ELEMENT_TRANSFER;
+      }
+
+      @Override
+      protected TransferObject execDragRequest() {
+        int beginIndex = getSelectionStart();
+        int endIndex = getSelectionEnd();
+        return new TextTransferObject(getValue().substring(beginIndex, endIndex));
+      }
+
     }
   }
 
@@ -108,6 +177,10 @@ public class ViewerForm extends AbstractForm {
       exportFormData(formData);
       formData = service.store(formData);
     }
+  }
+
+  public ViewerDNDField getViewerDNDField() {
+    return getFieldByClass(ViewerDNDField.class);
   }
 
   public ViewerField getViewerField() {

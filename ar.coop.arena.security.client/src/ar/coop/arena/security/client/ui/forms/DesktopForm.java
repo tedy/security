@@ -3,6 +3,7 @@ package ar.coop.arena.security.client.ui.forms;
 import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
+import org.eclipse.scout.commons.dnd.TransferObject;
 import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.basic.tree.ITreeNode;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
@@ -107,6 +108,16 @@ public class DesktopForm extends AbstractForm {
           String id = ((String) getSelectedNode().getPrimaryKey());
           showWIP(id);
         }*/
+
+        @Override
+        protected int getConfiguredDropType() {
+          return TYPE_TEXT_TRANSFER | TYPE_JAVA_ELEMENT_TRANSFER;
+        }
+
+        @Override
+        protected void execDrop(ITreeNode node, TransferObject t) throws ProcessingException {
+          t.isText();
+        }
 
         @Override
         protected void execNodeClick(ITreeNode node) throws ProcessingException {

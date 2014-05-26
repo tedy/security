@@ -14,6 +14,10 @@ public class ViewerFormData extends AbstractFormData {
     return getFieldByClass(Viewer.class);
   }
 
+  public ViewerDND getViewerDND() {
+    return getFieldByClass(ViewerDND.class);
+  }
+
   public static class Viewer extends AbstractValueFieldData<String> {
     private static final long serialVersionUID = 1L;
 
@@ -27,6 +31,22 @@ public class ViewerFormData extends AbstractFormData {
     protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
       super.initValidationRules(ruleMap);
       ruleMap.put(ValidationRule.MAX_LENGTH, Integer.MAX_VALUE);
+    }
+  }
+
+  public static class ViewerDND extends AbstractValueFieldData<String> {
+    private static final long serialVersionUID = 1L;
+
+    public ViewerDND() {
+    }
+
+    /**
+     * list of derived validation rules.
+     */
+    @Override
+    protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
+      super.initValidationRules(ruleMap);
+      ruleMap.put(ValidationRule.MAX_LENGTH, 4000);
     }
   }
 }
