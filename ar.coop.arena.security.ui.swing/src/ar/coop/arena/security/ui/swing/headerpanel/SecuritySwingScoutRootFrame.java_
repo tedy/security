@@ -1,0 +1,19 @@
+package ar.coop.arena.security.ui.swing.headerpanel;
+
+import java.awt.Frame;
+
+import org.eclipse.scout.rt.ui.swing.window.desktop.SwingScoutRootFrame;
+import org.eclipse.scout.rt.ui.swing.window.desktop.toolbar.SwingScoutHeaderPanel;
+
+public class SecuritySwingScoutRootFrame extends SwingScoutRootFrame {
+
+  public SecuritySwingScoutRootFrame(Frame frame) {
+    super(frame);
+  }
+
+  @Override
+  protected SwingScoutHeaderPanel createSwingScoutHeaderPanel() {
+//    return new SecuritySwingScoutHeaderPanel();
+    return null;
+  }
+}
