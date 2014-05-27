@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import javax.swing.AbstractButton;
 import javax.swing.JPanel;
@@ -81,7 +83,18 @@ public class SecurityJToolTabsBar extends AbstractJTabBar {
     gbc.anchor = GridBagConstraints.SOUTH;
     add(swingToolBar, gbc);
 
-    /*swingToolBar.addComponentListener(new ComponentAdapter() {
+    /*filler = new JPanel();
+    filler.setOpaque(false);
+    gbc = new GridBagConstraints();
+    gbc.gridx = 1;
+    gbc.gridy = 0;
+    gbc.gridheight = 2;
+    gbc.weightx = 1;
+    gbc.weighty = 1;
+    gbc.fill = GridBagConstraints.BOTH;
+    add(filler, gbc);*/
+
+    swingToolBar.addComponentListener(new ComponentAdapter() {
 
       private int m_width;
 
@@ -100,7 +113,7 @@ public class SecurityJToolTabsBar extends AbstractJTabBar {
           m_syncLock.release();
         }
       }
-    });*/
+    });
   }
 
   public void setSwingScoutHeaderPanel(SecuritySwingScoutHeaderPanel swingScoutHeaderPanel) {

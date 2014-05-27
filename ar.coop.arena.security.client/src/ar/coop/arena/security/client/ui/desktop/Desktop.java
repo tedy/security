@@ -9,6 +9,8 @@ import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractFormToolButton;
+import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutlineViewButton;
+import org.eclipse.scout.rt.client.ui.desktop.outline.IOutline;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.IForm;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
@@ -21,6 +23,7 @@ import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.runner.ViewerForm;
 import ar.coop.arena.security.client.target.WIPForm;
+import ar.coop.arena.security.client.ui.desktop.outlines.TargetsOutline;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
 import ar.coop.arena.security.shared.Icons;
 
@@ -28,6 +31,12 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
 
   public Desktop() {
+  }
+
+  @SuppressWarnings("unchecked")
+  @Override
+  protected Class<? extends IOutline>[] getConfiguredOutlines() {
+    return new Class[]{TargetsOutline.class};
   }
 
   @Override
@@ -50,8 +59,8 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     desktopForm.setIconId(Icons.EclipseScout);
     desktopForm.startView();
 
-//    ViewerForm viewerForm = new ViewerForm();
-//    viewerForm.startModify();
+    //    ViewerForm viewerForm = new ViewerForm();
+    //    viewerForm.startModify();
     WIPForm wipForm = new WIPForm();
     wipForm.startModify();
   }
@@ -283,7 +292,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       form.activate();
 
       form = findForm(ViewerForm.class);
-//      form.doClose();
+      //      form.doClose();
     }
   }
 
@@ -322,6 +331,18 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
           page.reloadPage();
         }
       }
+    }
+  }
+
+  @Order(10.0)
+  public class TargetsOutlineViewButton extends AbstractOutlineViewButton {
+    public TargetsOutlineViewButton() {
+      super(Desktop.this, TargetsOutline.class);
+    }
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Targets");
     }
   }
 

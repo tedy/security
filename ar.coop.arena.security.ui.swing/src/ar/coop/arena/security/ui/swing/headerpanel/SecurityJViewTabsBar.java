@@ -14,10 +14,10 @@ import org.eclipse.scout.rt.client.ui.action.view.IViewButton;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
 import org.eclipse.scout.rt.ui.swing.ISwingEnvironment;
 import org.eclipse.scout.rt.ui.swing.action.ISwingScoutAction;
-import org.eclipse.scout.rt.ui.swing.window.desktop.toolbar.AbstractJViewTabsBar;
+import org.eclipse.scout.rt.ui.swing.window.desktop.toolbar.AbstractJTabBar;
 
 // TODO ver si uso AbstractJTabBar
-public class SecurityJViewTabsBar extends AbstractJViewTabsBar {
+public class SecurityJViewTabsBar extends AbstractJTabBar {
   private static final long serialVersionUID = 8471091861071714434L;
 
   private final ISwingEnvironment m_env;
@@ -28,7 +28,6 @@ public class SecurityJViewTabsBar extends AbstractJViewTabsBar {
     setOpaque(false);
   }
 
-  @Override
   public void rebuild(IDesktop desktop) {
     removeAll();
 
