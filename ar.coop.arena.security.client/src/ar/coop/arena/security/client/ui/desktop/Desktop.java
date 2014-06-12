@@ -18,6 +18,8 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
 import ar.coop.arena.security.client.ClientSession;
+import ar.coop.arena.security.client.framework.FrameworkTreeForm;
+import ar.coop.arena.security.client.framework.UploadFrameworkForm;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.project.SelectProjectForm;
 import ar.coop.arena.security.client.runner.ViewerForm;
@@ -50,8 +52,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     /*SelectProjectForm selectProjectForm = new SelectProjectForm();
     selectProjectForm.startModify();*/
 
-    DesktopForm desktopForm = new DesktopForm();
-    desktopForm.startView();
+    /*DesktopForm desktopForm = new DesktopForm();
+    desktopForm.startView();*/
+    FrameworkTreeForm treeForm = new FrameworkTreeForm();
+    treeForm.startView();
 
     /*ViewerForm viewerForm = new ViewerForm();
     viewerForm.startModify();*/
@@ -195,6 +199,16 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       @Override
       protected String getConfiguredText() {
         return TEXTS.get("UpdateMenu");
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        UploadFrameworkForm form = new UploadFrameworkForm();
+        form.startNew();
+        form.waitFor();
+
+        FrameworkTreeForm treeForm = new FrameworkTreeForm();
+        treeForm.activate();
       }
     }
   }
