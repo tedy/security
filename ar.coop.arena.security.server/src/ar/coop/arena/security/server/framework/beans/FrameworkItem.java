@@ -10,13 +10,12 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 //@XmlAccessorType(XmlAccessType.FIELD)
 public class FrameworkItem {
   private Integer frameworkId;
-//  private Integer frameworkItemId;
-  private Integer itemId;
+  private Integer frameworkItemId;
   private String description;
   private Boolean status;
 
-//  private Integer parentFrameworkId;
-//  private Integer parentFrameworkItemId;
+  private Integer parentFrameworkId;
+  private Integer parentFrameworkItemId;
 
   public FrameworkItem() {
   }
@@ -24,7 +23,7 @@ public class FrameworkItem {
   public FrameworkItem(Integer frameworkId, Integer itemId, String description, Boolean status) {
     super();
     this.frameworkId = frameworkId;
-    this.itemId = itemId;
+    this.frameworkItemId = itemId;
     this.description = description;
     this.status = status;
   }
@@ -38,12 +37,12 @@ public class FrameworkItem {
   }
 
   @XmlAttribute(name = "id")
-  public Integer getItemId() {
-    return itemId;
+  public Integer getFrameworkItemId() {
+    return frameworkItemId;
   }
 
-  public void setItemId(Integer itemId) {
-    this.itemId = itemId;
+  public void setFrameworkItemId(Integer itemId) {
+    this.frameworkItemId = itemId;
   }
 
   @XmlElement
@@ -61,6 +60,22 @@ public class FrameworkItem {
 
   public void setStatus(Boolean status) {
     this.status = status;
+  }
+
+  public Integer getParentFrameworkId() {
+    return parentFrameworkId;
+  }
+
+  public void setParentFrameworkId(Integer parentFrameworkId) {
+    this.parentFrameworkId = parentFrameworkId;
+  }
+
+  public Integer getParentFrameworkItemId() {
+    return parentFrameworkItemId;
+  }
+
+  public void setParentFrameworkItemId(Integer parentFrameworkItemId) {
+    this.parentFrameworkItemId = parentFrameworkItemId;
   }
 
   private List<FrameworkItem> items = new ArrayList<FrameworkItem>();
