@@ -52,10 +52,10 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     /*SelectProjectForm selectProjectForm = new SelectProjectForm();
     selectProjectForm.startModify();*/
 
-    /*DesktopForm desktopForm = new DesktopForm();
-    desktopForm.startView();*/
-    FrameworkTreeForm treeForm = new FrameworkTreeForm();
-    treeForm.startView();
+    DesktopForm desktopForm = new DesktopForm();
+    desktopForm.startView();
+    /*FrameworkTreeForm treeForm = new FrameworkTreeForm();
+    treeForm.startView();*/
 
     /*ViewerForm viewerForm = new ViewerForm();
     viewerForm.startModify();*/
@@ -157,7 +157,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       return TEXTS.get("FrameworksMenu");
     }
 
-    @Order(10.0)
+    /*@Order(10.0)
     public class AddMenu extends AbstractExtensibleMenu {
 
       @Override
@@ -199,6 +199,15 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       @Override
       protected String getConfiguredText() {
         return TEXTS.get("UpdateMenu");
+      }
+    }*/
+
+    @Order(60.0)
+    public class LoadMenu extends AbstractExtensibleMenu {
+
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("LoadMenu");
       }
 
       @Override
@@ -244,7 +253,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       }
     }
 
-    @Order(20.0)
+    /*@Order(20.0)
     public class ModifyMenu extends AbstractExtensibleMenu {
 
       @Override
@@ -257,7 +266,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
         DesktopForm desktopForm = findForm(DesktopForm.class);
         desktopForm.editNode();
       }
-    }
+    }*/
 
   }
 
@@ -269,7 +278,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       return TEXTS.get("ToolsMenu");
     }
 
-    @Order(10.0)
+    /*@Order(10.0)
     public class AddMenu extends AbstractExtensibleMenu {
 
       @Override
@@ -294,7 +303,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected String getConfiguredText() {
         return TEXTS.get("RemoveMenu");
       }
-    }
+    }*/
   }
 
   @Order(50.0)
