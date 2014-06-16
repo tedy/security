@@ -30,7 +30,6 @@
 
    <plugins>
       <plugin id="ar.coop.arena.security.server"/>
-      <plugin id="ar.coop.arena.security.server.htmlcleaner"/>
       <plugin id="ar.coop.arena.security.shared"/>
       <plugin id="javax.servlet"/>
       <plugin id="javax.xml"/>
