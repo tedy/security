@@ -92,6 +92,11 @@
             class="ar.coop.arena.security.server.framework.services.lookup.FrameworkLookupService"
             session="ar.coop.arena.security.server.ServerSession">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.framework.FrameworksService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
    </extension>
    <extension
          name=""
@@ -158,8 +163,8 @@
          name=""
          point="org.eclipse.core.runtime.products">
       <product
-            application="ar.coop.arena.security.server.app"
-            name="security Server">
+            name="security Server"
+            application="ar.coop.arena.security.server.app">
          <property
                name="appName"
                value="security Server">

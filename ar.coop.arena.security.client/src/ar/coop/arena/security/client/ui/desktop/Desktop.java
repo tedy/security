@@ -19,6 +19,7 @@ import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
 import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.framework.FrameworkTreeForm;
+import ar.coop.arena.security.client.framework.FrameworksForm;
 import ar.coop.arena.security.client.framework.UploadFrameworkForm;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.project.SelectProjectForm;
@@ -157,6 +158,14 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       return TEXTS.get("FrameworksMenu");
     }
 
+    @Override
+    protected void execAction() throws ProcessingException {
+      FrameworksForm form = new FrameworksForm();
+      DesktopForm desktopForm = findForm(DesktopForm.class);
+      //      form.setProjectNr(desktopForm.getProjectId().longValue());
+      form.startModify();
+    }
+
     @Order(10.0)
     public class AddMenu extends AbstractExtensibleMenu {
 
@@ -269,7 +278,14 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       return TEXTS.get("ToolsMenu");
     }
 
-    @Order(10.0)
+    @Override
+    protected void execAction() throws ProcessingException {
+      FrameworksForm form = new FrameworksForm();
+      DesktopForm desktopForm = findForm(DesktopForm.class);
+      //      form.setProjectNr(desktopForm.getProjectId().longValue());
+      form.startModify();
+    }
+    /*@Order(10.0)
     public class AddMenu extends AbstractExtensibleMenu {
 
       @Override
@@ -294,7 +310,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected String getConfiguredText() {
         return TEXTS.get("RemoveMenu");
       }
-    }
+    }*/
   }
 
   @Order(50.0)
