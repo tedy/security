@@ -280,6 +280,11 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
 
     @Override
+    protected boolean getConfiguredVisible() {
+      return false;
+    }
+
+    @Override
     protected void execAction() throws ProcessingException {
       FrameworksForm form = new FrameworksForm();
       DesktopForm desktopForm = findForm(DesktopForm.class);
