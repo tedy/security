@@ -4,6 +4,7 @@ import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
@@ -114,6 +115,20 @@ public class WIPForm extends AbstractForm {
       @Override
       protected boolean getConfiguredScrollBarEnabled() {
         return true;
+      }
+    }
+
+    @Order(10.0)
+    public class SaveKeyStroke extends AbstractKeyStroke {
+
+      @Override
+      protected String getConfiguredKeyStroke() {
+        return "CTRL-S";
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        getForm().doSave();
       }
     }
 
