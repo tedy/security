@@ -62,20 +62,16 @@ public class FrameworksService extends AbstractService implements IFrameworksSer
     RemoteFile[] files = rfs.getRemoteFiles("frameworks", new NoFilenameFilter(), null);
     Object[][] result = new Object[files.length][5];
     for (int i = 0; i < files.length; i++) {
-      System.out.println(files[i].getName());
       try {
-        System.out.println(new String(files[i].extractData()));
-
         Framework4List fwk = parseXML(files[i].extractData());
         result[i][0] = fwk.getName();
         result[i][1] = fwk.getAuthor();
         result[i][2] = fwk.getInfo();
         result[i][3] = fwk.getVersion();
         result[i][4] = files[i].getName();
-
       }
       catch (IOException e) {
-        e.printStackTrace();
+        throw new ProcessingException(e.getMessage(), e);
       }
     }
     return result;

@@ -7,6 +7,7 @@ import org.eclipse.scout.commons.exception.ProcessingException;
 import org.eclipse.scout.rt.client.ui.basic.table.columns.AbstractStringColumn;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
+import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractOkButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
@@ -15,9 +16,14 @@ import org.eclipse.scout.rt.extension.client.ui.basic.table.AbstractExtensibleTa
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.service.SERVICES;
 
+import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.AddButton;
 import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.CancelButton;
+import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.DownloadButton;
 import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.FrameworksField;
+import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.ModifyButton;
 import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.OkButton;
+import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.RemoveButton;
+import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.UpdateBtButton;
 import ar.coop.arena.security.shared.framework.FrameworksFormData;
 import ar.coop.arena.security.shared.framework.IFrameworksService;
 import ar.coop.arena.security.shared.framework.UpdateFrameworksPermission;
@@ -36,10 +42,6 @@ public class FrameworksForm extends AbstractForm {
     return TEXTS.get("Frameworks");
   }
 
-  public CancelButton getCancelButton() {
-    return getFieldByClass(CancelButton.class);
-  }
-
   @FormData
   public Long getFrameworksNr() {
     return frameworksNr;
@@ -54,6 +56,14 @@ public class FrameworksForm extends AbstractForm {
     startInternal(new ModifyHandler());
   }
 
+  public AddButton getAddButton() {
+    return getFieldByClass(AddButton.class);
+  }
+
+  public DownloadButton getDownloadButton() {
+    return getFieldByClass(DownloadButton.class);
+  }
+
   public FrameworksField getFrameworksField() {
     return getFieldByClass(FrameworksField.class);
   }
@@ -66,11 +76,57 @@ public class FrameworksForm extends AbstractForm {
     return getFieldByClass(OkButton.class);
   }
 
+  public CancelButton getCancelButton() {
+    return getFieldByClass(CancelButton.class);
+  }
+
+  public ModifyButton getModifyButton() {
+    return getFieldByClass(ModifyButton.class);
+  }
+
+  public RemoveButton getRemoveButton() {
+    return getFieldByClass(RemoveButton.class);
+  }
+
+  public UpdateBtButton getUpdateBtButton() {
+    return getFieldByClass(UpdateBtButton.class);
+  }
+
   @Order(10.0)
   public class MainBox extends AbstractGroupBox {
 
+    @Override
+    protected boolean getConfiguredBorderVisible() {
+      return false;
+    }
+
+    @Override
+    protected boolean getConfiguredExpandable() {
+      return true;
+    }
+
+    @Override
+    protected boolean getConfiguredGridUseUiWidth() {
+      return true;
+    }
+
+    @Override
+    protected boolean getConfiguredLabelVisible() {
+      return false;
+    }
+
+    @Override
+    protected boolean getConfiguredScrollable() {
+      return true;
+    }
+
     @Order(10.0)
     public class FrameworksField extends AbstractTableField<FrameworksField.Table> {
+
+      @Override
+      protected int getConfiguredGridH() {
+        return 10;
+      }
 
       @Override
       protected boolean getConfiguredLabelVisible() {
@@ -79,28 +135,6 @@ public class FrameworksForm extends AbstractForm {
 
       @Override
       protected void execInitField() throws ProcessingException {
-        /*IRemoteFileService rfs = SERVICES.getService(IRemoteFileService.class);
-        ((RemoteFileService) rfs).setRootPath("/home/tedy/security/");
-        RemoteFile[] files = rfs.getRemoteFiles("frameworks", new NoFilenameFilter(), null);
-        for (int i = 0; i < files.length; i++) {
-          System.out.println(files[i].getName());
-          try {
-            System.out.println(new String(files[i].extractData()));
-
-            ITableRow row = getTable().createRow();
-            getTable().getNameColumn().setValue(row, "Smith");
-            getTable().getAuthorColumn().setValue(row, "");
-            getTable().getInfoColumn().setValue(row, "");
-        //            getTable().getVersionColumn().setValue(row, DateUtility.parse("14.12.1970", "dd.MM.yyyy"));
-            getTable().getFileNameColumn().setValue(row, files[i].getName());
-            getTable().addRow(row, true);
-
-        //            getTable().addRowByArray(files);
-          }
-          catch (IOException e) {
-            e.printStackTrace();
-          }
-        }*/
         IFrameworksService service = SERVICES.getService(IFrameworksService.class);
         getTable().addRowsByMatrix(service.loadFrameworksFromFileSystem(null));
       }
@@ -118,6 +152,11 @@ public class FrameworksForm extends AbstractForm {
 
         public FileNameColumn getFileNameColumn() {
           return getColumnSet().getColumnByClass(FileNameColumn.class);
+        }
+
+        @Override
+        protected boolean getConfiguredAutoResizeColumns() {
+          return true;
         }
 
         public AuthorColumn getAuthorColumn() {
@@ -153,6 +192,11 @@ public class FrameworksForm extends AbstractForm {
           protected String getConfiguredHeaderText() {
             return TEXTS.get("Info");
           }
+
+          @Override
+          protected int getConfiguredWidth() {
+            return 40;
+          }
         }
 
         @Order(40.0)
@@ -161,6 +205,11 @@ public class FrameworksForm extends AbstractForm {
           @Override
           protected String getConfiguredHeaderText() {
             return TEXTS.get("Version");
+          }
+
+          @Override
+          protected int getConfiguredWidth() {
+            return 40;
           }
         }
 
@@ -171,15 +220,70 @@ public class FrameworksForm extends AbstractForm {
           protected String getConfiguredHeaderText() {
             return TEXTS.get("FileName");
           }
+
+          @Override
+          protected int getConfiguredWidth() {
+            return 100;
+          }
         }
       }
     }
 
     @Order(20.0)
-    public class OkButton extends AbstractOkButton {
+    public class AddButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Add");
+      }
     }
 
     @Order(30.0)
+    public class ModifyButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Modify");
+      }
+    }
+
+    @Order(40.0)
+    public class RemoveButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Remove");
+      }
+    }
+
+    @Order(50.0)
+    public class DownloadButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Download");
+      }
+    }
+
+    @Order(60.0)
+    public class UpdateBtButton extends AbstractButton {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("UpdateBt");
+      }
+    }
+
+    @Order(70.0)
+    public class OkButton extends AbstractOkButton {
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return false;
+      }
+    }
+
+    @Order(80.0)
     public class CancelButton extends AbstractCancelButton {
     }
   }
@@ -204,11 +308,4 @@ public class FrameworksForm extends AbstractForm {
       formData = service.store(formData);
     }
   }
-
-  /*public class NoFilenameFilter implements FilenameFilter, Serializable {
-    @Override
-    public boolean accept(File dir, String name) {
-      return true;
-    }
-  }*/
 }

@@ -82,7 +82,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
       @Override
       protected void execAction() throws ProcessingException {
-        /*DefaultWizardContainerForm form = new DefaultWizardContainerForm(new ProjectWizard());
+        /*DefaultWizardContainerForm form = new DefaultWizardContainerForm(new ProjectForm());
         form.startWizard();*/
 
         ProjectForm form = new ProjectForm();
