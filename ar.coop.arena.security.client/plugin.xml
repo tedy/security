@@ -56,6 +56,10 @@
             factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
             class="ar.coop.arena.security.shared.framework.services.lookup.IFrameworkLookupService">
       </proxy>
+      <proxy
+            factory="org.eclipse.scout.rt.client.services.ClientProxyServiceFactory"
+            class="ar.coop.arena.security.shared.framework.IFrameworksService">
+      </proxy>
    </extension>
 
 </plugin>

@@ -19,6 +19,7 @@ import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
 import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.framework.FrameworkTreeForm;
+import ar.coop.arena.security.client.framework.FrameworksForm;
 import ar.coop.arena.security.client.framework.UploadFrameworkForm;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.project.SelectProjectForm;
@@ -81,7 +82,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
       @Override
       protected void execAction() throws ProcessingException {
-        /*DefaultWizardContainerForm form = new DefaultWizardContainerForm(new ProjectWizard());
+        /*DefaultWizardContainerForm form = new DefaultWizardContainerForm(new ProjectForm());
         form.startWizard();*/
 
         ProjectForm form = new ProjectForm();
@@ -278,6 +279,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       return TEXTS.get("ToolsMenu");
     }
 
+    @Override
+    protected void execAction() throws ProcessingException {
+      FrameworksForm form = new FrameworksForm();
+      DesktopForm desktopForm = findForm(DesktopForm.class);
+      //      form.setProjectNr(desktopForm.getProjectId().longValue());
+      form.startModify();
+    }
     /*@Order(10.0)
     public class AddMenu extends AbstractExtensibleMenu {
 

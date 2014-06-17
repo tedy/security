@@ -13,7 +13,7 @@ public class TargetLookupService extends AbstractSqlLookupService implements ITa
         + " FROM  TARGET "
         + " WHERE PROJECTID = :projectId"
         + " UNION "
-        + " SELECT TRIM(CAST(TARGETID AS CHAR(7)))||'_'||TRIM(CAST(TARGETITEMID AS CHAR(7))), CAST (PORT AS CHAR(5)) || '  ' || NAME "
+        + " SELECT TRIM(CAST(TARGETID AS CHAR(7)))||'_'||TRIM(CAST(TARGETITEMID AS CHAR(7))), CAST (PORT AS CHAR(5)) || PROTOCOL || '  ' || NAME "
         + " , PATH AS ICONID, ''AS tooltip, 'F0F0F0', '404040', 'NULL' as font, 1, TRIM(CAST(TARGETID AS CHAR(7))), 1 "
         + " FROM TARGETITEM "
         + " LEFT JOIN RISK ON (TARGETITEM.RISKID=RISK.RISKID) "
