@@ -9,8 +9,6 @@ import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
 import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractFormToolButton;
-import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractOutlineViewButton;
-import org.eclipse.scout.rt.client.ui.desktop.outline.IOutline;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.IForm;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
@@ -23,7 +21,7 @@ import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.runner.ViewerForm;
 import ar.coop.arena.security.client.target.WIPForm;
-import ar.coop.arena.security.client.ui.desktop.outlines.TargetsOutline;
+//import ar.coop.arena.security.client.ui.desktop.outlines.TargetsOutline;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
 import ar.coop.arena.security.shared.Icons;
 
@@ -33,11 +31,11 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   public Desktop() {
   }
 
-  @SuppressWarnings("unchecked")
+  /*@SuppressWarnings("unchecked")
   @Override
   protected Class<? extends IOutline>[] getConfiguredOutlines() {
     return new Class[]{TargetsOutline.class};
-  }
+  }*/
 
   @Override
   protected String getConfiguredTitle() {
@@ -334,7 +332,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  @Order(10.0)
+  /*@Order(10.0)
   public class TargetsOutlineViewButton extends AbstractOutlineViewButton {
     public TargetsOutlineViewButton() {
       super(Desktop.this, TargetsOutline.class);
@@ -344,6 +342,6 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     protected String getConfiguredText() {
       return TEXTS.get("Targets");
     }
-  }
+  }*/
 
 }

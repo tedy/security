@@ -9,7 +9,6 @@ Export-Package: ar.coop.arena.security.client,
  ar.coop.arena.security.client.runner,
  ar.coop.arena.security.client.target,
  ar.coop.arena.security.client.ui.desktop,
- ar.coop.arena.security.client.ui.desktop.outlines,
  ar.coop.arena.security.client.ui.forms
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.scout.rt.client;visibility:=reexport,
