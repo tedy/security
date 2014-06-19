@@ -57,24 +57,6 @@ public class UploadFrameworkService extends AbstractService implements IUploadFr
           throw new ProcessingException("Could not persist remote file.", e);
         }
       }
-      /*int updated = SQL.update("" +
-          " UPDATE FILES " +
-          "    SET CONTENT = :content " +
-          "  WHERE FILENAME = :filename "
-          , new NVPair("filename", formData.getRemoteFile().getName())
-          , new NVPair("content", content)
-          );
-
-      if (updated == 0) {
-        SQL.insert("" +
-            " INSERT INTO FILES " +
-            "    (FILENAME, CONTENT) " +
-            "   VALUES " +
-            "    (:filename, :content) "
-            , new NVPair("filename", formData.getRemoteFile().getName())
-            , new NVPair("content", content)
-            );
-      }*/
     }
     catch (IOException e) {
       throw new ProcessingException("Could not process remote file.", e);
