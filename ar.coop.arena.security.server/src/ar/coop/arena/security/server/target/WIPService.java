@@ -50,7 +50,20 @@ public class WIPService extends AbstractService implements IWIPService {
     if (result != null && result.length > 0 && result[0].length > 0) {
 //      HTMLContent content = new HTMLContent((String) result[0][4]);
 //      formData.getContent().setValue(unparseHTML(content));
-      formData.getContent().setValue(escapeBr((String) result[0][4]));
+
+      StringBuilder sb = new StringBuilder();
+      sb.append("<p id=\"header\">");
+      sb.append(result[0][1]);
+      sb.append("  ");
+      sb.append(result[0][2]);
+      sb.append("  ");
+      sb.append(result[0][3]);
+      sb.append("</p>");
+      sb.append("<br/><hr/>");
+      sb.append("<p id=\"content\">");
+      sb.append(escapeBr((String) result[0][4]));
+      sb.append("</p>");
+      formData.getContent().setValue(sb.toString());
     }
     return formData;
   }
@@ -60,8 +73,8 @@ public class WIPService extends AbstractService implements IWIPService {
     if (!ACCESS.check(new UpdateWIPPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    HTMLContent content = parseHTML(formData.getContent().getValue());
-    formData.getContent().setValue(content.getBody().trim());
+    HTMLContent content = unmarshalHTML(formData.getContent().getValue());
+    formData.getContent().setValue(content.getContent().trim());
     SQL.update("UPDATE TARGETITEM SET CONTENT = :content "
         + "WHERE  TARGETITEMID = :nodeNr", formData);
     return formData;
@@ -82,8 +95,9 @@ public class WIPService extends AbstractService implements IWIPService {
     return content.toString();
   }*/
 
-  private HTMLContent parseHTML(String content) throws ProcessingException {
+  private HTMLContent unmarshalHTML(String content) throws ProcessingException {
     content = Pattern.compile("<br>").matcher(content).replaceAll("\n");
+    content = Pattern.compile("<hr>").matcher(content).replaceAll("");
 //    content = content.replaceAll("<br>", "\\n");
     HTMLContent html;
     try {
