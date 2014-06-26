@@ -21,6 +21,7 @@ import ar.coop.arena.security.client.project.ProjectForm.MainBox.EndDateField;
 import ar.coop.arena.security.client.project.ProjectForm.MainBox.NameField;
 import ar.coop.arena.security.client.project.ProjectForm.MainBox.OkButton;
 import ar.coop.arena.security.client.project.ProjectForm.MainBox.StartDateField;
+import ar.coop.arena.security.client.ui.forms.DesktopForm;
 import ar.coop.arena.security.shared.project.IProjectService;
 import ar.coop.arena.security.shared.project.ProjectFormData;
 import ar.coop.arena.security.shared.project.UpdateProjectPermission;
@@ -207,6 +208,11 @@ public class ProjectForm extends AbstractForm {
       ProjectFormData formData = new ProjectFormData();
       exportFormData(formData);
       formData = service.create(formData);
+
+      DesktopForm form = getDesktop().findForm(DesktopForm.class);
+      if (form != null) {
+        form.setProjectId(formData.getProjectNr().intValue());
+      }
     }
   }
 }

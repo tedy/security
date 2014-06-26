@@ -10,8 +10,9 @@ public class FrameworkLookupService extends AbstractSqlLookupService implements 
   protected String getConfiguredSqlSelect() {
     return "SELECT FRAMEWORKITEMID, DESCRIPTION "
         + " , '' AS ICONID, ''AS tooltip, 'F0F0F0', '404040', 'NULL' as font, 1, PARENTFRAMEWORKITEMID, 1 "
-        + " FROM FRAMEWORKITEM "
-//        + " WHERE PROJECTID = :projectId"
-    ;
+        + " FROM FRAMEWORKITEM FWI "
+        + " INNER JOIN FRAMEWORK FW ON (FWI.FRAMEWORKID=FW.FRAMEWORKID)"
+        + " INNER JOIN PROJECT P ON (FW.FRAMEWORKID=P.FRAMEWORKID AND FW.VERSION=P.VERSION) "
+        + " WHERE PROJECTID = :key";
   }
 }

@@ -29,6 +29,7 @@ import ar.coop.arena.security.shared.framework.UploadFrameworkFormData;
 public class UploadFrameworkForm extends AbstractForm {
 
   private RemoteFile m_remoteFile;
+  private Integer m_projectId;
 
   public UploadFrameworkForm() throws ProcessingException {
     super();
@@ -151,6 +152,16 @@ public class UploadFrameworkForm extends AbstractForm {
   @FormData
   public void setRemoteFile(RemoteFile remoteFile) {
     m_remoteFile = remoteFile;
+  }
+
+  @FormData
+  public Integer getProjectId() {
+    return m_projectId;
+  }
+
+  @FormData
+  public void setProjectId(Integer projectId) {
+    m_projectId = projectId;
   }
 
   /*private class NoFilenameFilter implements FilenameFilter, Serializable {

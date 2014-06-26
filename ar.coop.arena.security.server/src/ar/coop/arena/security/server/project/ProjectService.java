@@ -40,6 +40,12 @@ public class ProjectService extends AbstractService implements IProjectService {
         //        + ", :workdir, :fremeworkId, :version"
         + ")"
         , formData);
+
+    SQL.selectInto("" +
+        "SELECT PROJECTID FROM PROJECT " +
+        "WHERE NAME = :name AND CUSTOMER = :customer AND AUTHOR = :author " +
+        "INTO :projectNr"
+        , formData);
     return formData;
   }
 

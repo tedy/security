@@ -49,8 +49,15 @@ public class UploadFrameworkService extends AbstractService implements IUploadFr
                   "VALUES (:{fwk.version}, :{fwk.name}, :{fwk.author}, :{fwk.info}) "
               , new NVPair("fwk", fwkXML, Framework.class));
 
-          fwkInDB = getFramework(fwkXML);
+          fwkInDB = getFramework(fwkXML); // 4 gets FRAMEWORKID
           insertItems(fwkXML.getItems(), fwkInDB.getFrameworkId());
+
+          SQL.update("UPDATE PROJECT SET"
+              + " FRAMEWORKID = :{fwk.frameworkId} ,"
+              + " VERSION = :{fwk.version} "
+              + " WHERE PROJECTID = :projectId"
+              , new NVPair("projectId", formData.getProjectId()
+                  , Integer.class), new NVPair("fwk", fwkXML, Framework.class));
         }
         catch (ProcessingException e) {
           SQL.rollback();

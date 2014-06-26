@@ -12,6 +12,24 @@ public class UploadFrameworkFormData extends AbstractFormData {
   public UploadFrameworkFormData() {
   }
 
+  public ProjectIdProperty getProjectIdProperty() {
+    return getPropertyByClass(ProjectIdProperty.class);
+  }
+
+  /**
+   * access method for property ProjectId.
+   */
+  public Integer getProjectId() {
+    return getProjectIdProperty().getValue();
+  }
+
+  /**
+   * access method for property ProjectId.
+   */
+  public void setProjectId(Integer projectId) {
+    getProjectIdProperty().setValue(projectId);
+  }
+
   public RemoteFileProperty getRemoteFileProperty() {
     return getPropertyByClass(RemoteFileProperty.class);
   }
@@ -32,6 +50,13 @@ public class UploadFrameworkFormData extends AbstractFormData {
 
   public FileName getFileName() {
     return getFieldByClass(FileName.class);
+  }
+
+  public class ProjectIdProperty extends AbstractPropertyData<Integer> {
+    private static final long serialVersionUID = 1L;
+
+    public ProjectIdProperty() {
+    }
   }
 
   public class RemoteFileProperty extends AbstractPropertyData<RemoteFile> {

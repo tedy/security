@@ -7,6 +7,7 @@ import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.basic.tree.ITreeNode;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
@@ -17,6 +18,7 @@ import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.rt.shared.services.lookup.LookupRow;
 
 import ar.coop.arena.security.client.framework.FrameworkTreeForm.MainBox.FrameworkTreeField;
+import ar.coop.arena.security.client.ui.forms.DesktopForm;
 import ar.coop.arena.security.shared.framework.FrameworkTreeFormData;
 import ar.coop.arena.security.shared.framework.services.lookup.FrameworkLookupCall;
 
@@ -24,7 +26,6 @@ import ar.coop.arena.security.shared.framework.services.lookup.FrameworkLookupCa
 public class FrameworkTreeForm extends AbstractForm {
 
   private Integer frameworkNr;
-
   public FrameworkTreeForm() throws ProcessingException {
     super();
   }
@@ -96,6 +97,12 @@ public class FrameworkTreeForm extends AbstractForm {
       @Override
       protected void execFilterLookupResult(LookupCall call, List<LookupRow> result) throws ProcessingException {
         java.util.Collections.sort(result, new KeyLookupRowComparator());
+      }
+
+      @Override
+      protected void execPrepareLookup(LookupCall call, ITreeNode parent) throws ProcessingException {
+        DesktopForm desktopForm = getDesktop().findForm(DesktopForm.class);
+        call.setKey(desktopForm.getProjectId());
       }
 
       @Order(10.0)

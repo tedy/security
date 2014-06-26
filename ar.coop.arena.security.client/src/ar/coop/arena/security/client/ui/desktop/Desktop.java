@@ -102,6 +102,12 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected void execAction() throws ProcessingException {
         SelectProjectForm form = new SelectProjectForm();
         form.startModify();
+
+        /*form.waitFor();
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        if (desktopForm != null) {
+          form.setProjectId(desktopForm.getProjectId());
+        }*/
       }
 
     }
@@ -214,9 +220,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       @Override
       protected void execAction() throws ProcessingException {
         UploadFrameworkForm form = new UploadFrameworkForm();
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        if (desktopForm != null) {
+          form.setProjectId(desktopForm.getProjectId());
+        }
         form.startNew();
-        form.waitFor();
 
+        form.waitFor();
         FrameworkTreeForm treeForm = new FrameworkTreeForm();
         treeForm.activate();
       }
@@ -344,6 +354,32 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   }
 
   @Order(10.0)
+  public class FrameworkTool extends AbstractFormToolButton {
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Framework");
+    }
+
+    @Override
+    protected void execToggleAction(boolean selected) throws ProcessingException {
+      FrameworkTreeForm form = findForm(FrameworkTreeForm.class);
+      if (selected) {
+        if (form == null) {
+          form = new FrameworkTreeForm();
+          form.startView();
+        }
+        form.activate();
+      }
+      else {
+        if (form != null) {
+          form.doClose();
+        }
+      }
+    }
+  }
+
+  @Order(20.0)
   public class WIPTool extends AbstractFormToolButton {
 
     @Override
@@ -361,11 +397,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       form.activate();
 
       form = findForm(ViewerForm.class);
-      //      form.doClose();
+      if (form != null) {
+        form.doClose();
+      }
     }
   }
 
-  @Order(20.0)
+  @Order(30.0)
   public class ViewerTool extends AbstractFormToolButton {
 
     @Override
