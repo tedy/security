@@ -6,7 +6,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JLabel;
-//import javax.swing.JSplitPane;
+import javax.swing.JSplitPane;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
@@ -34,7 +34,7 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
 
   protected final SpringLayout m_layout;
 
-//  private JSplitPane splitPane;
+  private JSplitPane splitPane;
 
   public SecuritySwingScoutHeaderPanel() {
     m_layout = new SpringLayout();
@@ -47,7 +47,7 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
 
     // view tabs
     m_viewTabsPanel = createViewTabsBar();
-    container.add(m_viewTabsPanel);
+//    container.add(m_viewTabsPanel);
 //    m_layout.putConstraint(SpringLayout.NORTH, m_viewTabsPanel, DISTANCE_NAVIGATION_TABS, SpringLayout.SOUTH, m_navigationPanel);
     m_layout.putConstraint(SpringLayout.SOUTH, m_viewTabsPanel, 0, SpringLayout.SOUTH, container);
     m_layout.putConstraint(SpringLayout.WEST, m_viewTabsPanel, 0, SpringLayout.WEST, container);
@@ -56,16 +56,15 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
     // tool buttons (only buttons of the type @{link AbstractFormToolButton} are considered)
     m_toolTabsPanel = createToolTabsBar();
     ((SecurityJToolTabsBar) m_toolTabsPanel).setSwingScoutHeaderPanel(this);
-    container.add(m_toolTabsPanel);
+//    container.add(m_toolTabsPanel);
     m_layout.putConstraint(SpringLayout.NORTH, m_toolTabsPanel, 0, SpringLayout.WEST, m_viewTabsPanel);
     m_layout.putConstraint(SpringLayout.SOUTH, m_toolTabsPanel, 0, SpringLayout.SOUTH, container);
     m_layout.putConstraint(SpringLayout.EAST, m_toolTabsPanel, 0, SpringLayout.EAST, container);
 
-    /*splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, m_viewTabsPanel, m_toolTabsPanel);
-    splitPane.setOneTouchExpandable(true);
-    splitPane.setContinuousLayout(true);
-    //    splitPane.setDividerLocation(0.5);
-    container.add(splitPane);*/
+    splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, m_viewTabsPanel, m_toolTabsPanel);
+//    splitPane.setDividerSize(300);
+    splitPane.setEnabled(false);
+    container.add(splitPane);
 
     Color color = UIManager.getColor("HeaderPanel.background");
     if (color != null) {
@@ -157,8 +156,8 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
   }
 
   private void rebuildViewTabs() {
-    ((SecurityJViewTabsBar) m_viewTabsPanel).rebuild(getScoutObject());
-//    ((SecurityJToolTabsBar) m_viewTabsPanel).rebuild(getScoutObject());
+//    ((SecurityJViewTabsBar) m_viewTabsPanel).rebuild(getScoutObject());
+    ((SecurityJToolTabsBar) m_viewTabsPanel).rebuild(getScoutObject());
   }
 
   private void rebuildToolTabs() {
@@ -166,12 +165,14 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
   }
 
   protected AbstractJTabBar createToolTabsBar() {
-    return new SecurityJToolTabsBar(getSwingEnvironment());
+    SecurityJToolTabsBar tb = new SecurityJToolTabsBar(getSwingEnvironment());
+    tb.setLeftSide(false);
+    return tb;
   }
 
   protected AbstractJTabBar createViewTabsBar() {
-    return new SecurityJViewTabsBar(getSwingEnvironment());
-//    return new SecurityJToolTabsBar(getSwingEnvironment());
+//    return new SecurityJViewTabsBar(getSwingEnvironment());
+    return new SecurityJToolTabsBar(getSwingEnvironment());
   }
 
 }

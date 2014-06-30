@@ -26,12 +26,17 @@ public class SecurityJToolTabsBar extends AbstractJTabBar {
   private final ISwingEnvironment m_env;
   private SecuritySwingScoutHeaderPanel m_swingScoutHeaderPanel;
   private final OptimisticLock m_syncLock;
+  private boolean m_leftSide = true;
 
   public SecurityJToolTabsBar(ISwingEnvironment env) {
     m_env = env;
     m_syncLock = new OptimisticLock();
     setLayout(new GridBagLayout());
     setOpaque(false);
+  }
+
+  public void setLeftSide(boolean b) {
+    m_leftSide = b;
   }
 
   public void rebuild(IDesktop desktop) {
@@ -46,6 +51,16 @@ public class SecurityJToolTabsBar extends AbstractJTabBar {
     for (IToolButton scoutToolButton : desktop.getToolButtons()) {
       if (!(scoutToolButton instanceof AbstractFormToolButton)) {
         continue; // only render @{link AbstractFormToolButton}'s
+      }
+      if (m_leftSide) {
+        if (!scoutToolButton.hasProperty("leftSide") || !((boolean) scoutToolButton.getProperty("leftSide"))) {
+          continue;
+        }
+      }
+      else {
+        if (scoutToolButton.hasProperty("leftSide") && ((boolean) scoutToolButton.getProperty("leftSide"))) {
+          continue;
+        }
       }
 
       ISwingScoutAction<IToolButton> swingScoutToolButton = createSwingScoutToolButton(scoutToolButton);
