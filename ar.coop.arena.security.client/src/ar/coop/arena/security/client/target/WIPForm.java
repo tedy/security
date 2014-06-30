@@ -4,15 +4,14 @@ import org.eclipse.scout.commons.annotations.FormData;
 import org.eclipse.scout.commons.annotations.FormData.SdkCommand;
 import org.eclipse.scout.commons.annotations.Order;
 import org.eclipse.scout.commons.exception.ProcessingException;
+import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.form.AbstractForm;
 import org.eclipse.scout.rt.client.ui.form.AbstractFormHandler;
-import org.eclipse.scout.rt.client.ui.form.fields.button.AbstractCancelButton;
 import org.eclipse.scout.rt.client.ui.form.fields.groupbox.AbstractGroupBox;
 import org.eclipse.scout.rt.client.ui.form.fields.htmlfield.AbstractHtmlField;
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.service.SERVICES;
 
-import ar.coop.arena.security.client.target.WIPForm.MainBox.CancelButton;
 import ar.coop.arena.security.client.target.WIPForm.MainBox.ContentField;
 import ar.coop.arena.security.shared.target.IWIPService;
 import ar.coop.arena.security.shared.target.UpdateWIPPermission;
@@ -48,8 +47,16 @@ public class WIPForm extends AbstractForm {
     return TEXTS.get("WIP");
   }
 
-  public CancelButton getCancelButton() {
+  /*public CancelButton getCancelButton() {
     return getFieldByClass(CancelButton.class);
+  }*/
+
+  @Override
+  protected void execDataChanged(Object... dataTypes) throws ProcessingException {
+    //TODO [tedy] Auto-generated method stub.
+    for (Object object : dataTypes) {
+      System.out.println(object);
+    }
   }
 
   @Override
@@ -111,9 +118,23 @@ public class WIPForm extends AbstractForm {
       }
     }
 
-    @Order(20.0)
-    public class CancelButton extends AbstractCancelButton {
+    @Order(10.0)
+    public class SaveKeyStroke extends AbstractKeyStroke {
+
+      @Override
+      protected String getConfiguredKeyStroke() {
+        return "CTRL-S";
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        getForm().doSave();
+      }
     }
+
+    /*@Order(20.0)
+    public class CancelButton extends AbstractCancelButton {
+    }*/
   }
 
   public class ModifyHandler extends AbstractFormHandler {

@@ -29,7 +29,23 @@ public class ProjectService extends AbstractService implements IProjectService {
     if (!ACCESS.check(new CreateProjectPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    //TODO [Piojo] business logic here.
+    /*SQL.selectInto("SELECT MAX(PROJECTID)+1 FROM PROJECT " +
+        //        "WHERE PROJECTID = :projectNr " +
+        "INTO :projectNr", formData);*/
+    SQL.insert("" +
+        "INSERT INTO PROJECT (NAME, CUSTOMER, STARTDATE, ENDDATE, AUTHOR"
+        //        + ", WORKDIR, FRAMEWORKID, VERSION"
+        + ") " +
+        "VALUES (:name, :customer, :startDate, :endDate, :author"
+        //        + ", :workdir, :fremeworkId, :version"
+        + ")"
+        , formData);
+
+    SQL.selectInto("" +
+        "SELECT PROJECTID FROM PROJECT " +
+        "WHERE NAME = :name AND CUSTOMER = :customer AND AUTHOR = :author " +
+        "INTO :projectNr"
+        , formData);
     return formData;
   }
 
@@ -38,11 +54,12 @@ public class ProjectService extends AbstractService implements IProjectService {
     if (!ACCESS.check(new ReadProjectPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    SQL.selectInto("SELECT NAME, CUSTOMER " +
-        "FROM PROJECT " +
-        "WHERE PROJECTID = :projectNr " +
-        "INTO :name," +
-        "     :customer"
+    SQL.selectInto("SELECT NAME, CUSTOMER, STARTDATE, ENDDATE, AUTHOR "
+        //        + ", WORKDIR, FRAMEWORKID, VERSION"
+        + " FROM PROJECT "
+        + " WHERE PROJECTID = :projectNr "
+        + " INTO :name, :customer, :startDate, :endDate, :author "
+        //        + ", :workdir, :fremeworkId, :version"
         , formData);
     return formData;
   }
@@ -52,7 +69,14 @@ public class ProjectService extends AbstractService implements IProjectService {
     if (!ACCESS.check(new UpdateProjectPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    //TODO [Piojo] business logic here
+    SQL.update("UPDATE PROJECT SET"
+        + " NAME = :name,"
+        + " CUSTOMER = :customer, "
+        + " STARTDATE = :startDate, "
+        + " ENDDATE = :endDate, "
+        + " AUTHOR = :author "
+        //        + ", :workdir, :fremeworkId, :version"
+        + " WHERE PROJECTID = :projectNr", formData);
     return formData;
   }
 }

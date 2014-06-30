@@ -77,6 +77,26 @@
             class="ar.coop.arena.security.server.target.WIPService"
             session="ar.coop.arena.security.server.ServerSession">
       </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.project.services.lookup.ProjectLookupService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.framework.UploadFrameworkService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.framework.services.lookup.FrameworkLookupService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
+      <service
+            factory="org.eclipse.scout.rt.server.services.ServerServiceFactory"
+            class="ar.coop.arena.security.server.framework.FrameworksService"
+            session="ar.coop.arena.security.server.ServerSession">
+      </service>
    </extension>
    <extension
          name=""

@@ -20,6 +20,7 @@ import ar.coop.arena.security.client.target.ItemForm.MainBox.CancelButton;
 import ar.coop.arena.security.client.target.ItemForm.MainBox.NameField;
 import ar.coop.arena.security.client.target.ItemForm.MainBox.OkButton;
 import ar.coop.arena.security.client.target.ItemForm.MainBox.PortField;
+import ar.coop.arena.security.client.target.ItemForm.MainBox.ProtocolField;
 import ar.coop.arena.security.client.target.ItemForm.MainBox.RiskField;
 import ar.coop.arena.security.shared.services.lookup.target.RiskLookupCall;
 import ar.coop.arena.security.shared.target.IItemService;
@@ -80,6 +81,10 @@ public class ItemForm extends AbstractForm {
     return getFieldByClass(PortField.class);
   }
 
+  public ProtocolField getProtocolField() {
+    return getFieldByClass(ProtocolField.class);
+  }
+
   public RiskField getRiskField() {
     return getFieldByClass(RiskField.class);
   }
@@ -122,6 +127,15 @@ public class ItemForm extends AbstractForm {
     }
 
     @Order(30.0)
+    public class ProtocolField extends AbstractStringField {
+
+      @Override
+      protected String getConfiguredLabel() {
+        return TEXTS.get("Protocol");
+      }
+    }
+
+    @Order(40.0)
     public class NameField extends AbstractStringField {
 
       @Override
@@ -130,11 +144,11 @@ public class ItemForm extends AbstractForm {
       }
     }
 
-    @Order(40.0)
+    @Order(50.0)
     public class OkButton extends AbstractOkButton {
     }
 
-    @Order(50.0)
+    @Order(60.0)
     public class CancelButton extends AbstractCancelButton {
     }
   }

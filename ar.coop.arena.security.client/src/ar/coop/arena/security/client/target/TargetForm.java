@@ -28,7 +28,7 @@ import ar.coop.arena.security.shared.target.UpdateTargetPermission;
 public class TargetForm extends AbstractForm {
 
   private Long targetNr;
-  private Long m_projectId;
+  private Integer m_projectId;
 
   public TargetForm() throws ProcessingException {
     super();
@@ -165,12 +165,12 @@ public class TargetForm extends AbstractForm {
   }
 
   @FormData
-  public Long getProjectId() {
+  public Integer getProjectId() {
     return m_projectId;
   }
 
   @FormData
-  public void setProjectId(Long projectNr) {
+  public void setProjectId(Integer projectNr) {
     m_projectId = projectNr;
   }
 }

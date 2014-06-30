@@ -17,12 +17,16 @@ import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 
 import ar.coop.arena.security.client.ClientSession;
+import ar.coop.arena.security.client.framework.FrameworkTreeForm;
+import ar.coop.arena.security.client.framework.FrameworksForm;
+import ar.coop.arena.security.client.framework.UploadFrameworkForm;
 import ar.coop.arena.security.client.project.ProjectForm;
+import ar.coop.arena.security.client.project.SelectProjectForm;
 import ar.coop.arena.security.client.runner.ViewerForm;
+import ar.coop.arena.security.client.target.TargetForm;
 import ar.coop.arena.security.client.target.WIPForm;
 //import ar.coop.arena.security.client.ui.desktop.outlines.TargetsOutline;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
-import ar.coop.arena.security.shared.Icons;
 
 public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
   private static IScoutLogger logger = ScoutLogManager.getLogger(Desktop.class);
@@ -52,12 +56,16 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     if (!UserAgentUtility.isDesktopDevice()) {
       return;
     }
-    DesktopForm desktopForm = new DesktopForm();
-    desktopForm.setIconId(Icons.EclipseScout);
-    desktopForm.startView();
+    /*SelectProjectForm selectProjectForm = new SelectProjectForm();
+    selectProjectForm.startModify();*/
 
-    //    ViewerForm viewerForm = new ViewerForm();
-    //    viewerForm.startModify();
+    DesktopForm desktopForm = new DesktopForm();
+    desktopForm.startView();
+    /*FrameworkTreeForm treeForm = new FrameworkTreeForm();
+    treeForm.startView();*/
+
+    /*ViewerForm viewerForm = new ViewerForm();
+    viewerForm.startModify();*/
     /*WIPForm wipForm = new WIPForm();
     wipForm.startModify();*/
   }
@@ -80,7 +88,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
       @Override
       protected void execAction() throws ProcessingException {
-        /*DefaultWizardContainerForm form = new DefaultWizardContainerForm(new ProjectWizard());
+        /*DefaultWizardContainerForm form = new DefaultWizardContainerForm(new ProjectForm());
         form.startWizard();*/
 
         ProjectForm form = new ProjectForm();
@@ -95,9 +103,42 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected String getConfiguredText() {
         return TEXTS.get("LoadMenu");
       }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        SelectProjectForm form = new SelectProjectForm();
+        form.startModify();
+
+        /*form.waitFor();
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        if (desktopForm != null) {
+          form.setProjectId(desktopForm.getProjectId());
+        }*/
+      }
+
     }
 
     @Order(30.0)
+    public class ModifyProjectMenu extends AbstractExtensibleMenu {
+
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("ModifyMenu");
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        /*DefaultWizardContainerForm form = new DefaultWizardContainerForm(new ProjectWizard());
+        form.startWizard();*/
+
+        ProjectForm form = new ProjectForm();
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        form.setProjectNr(desktopForm.getProjectId().longValue());
+        form.startModify();
+      }
+    }
+
+    @Order(40.0)
     public class SaveProjectMenu extends AbstractExtensibleMenu {
 
       @Override
@@ -106,7 +147,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       }
     }
 
-    @Order(40.0)
+    @Order(50.0)
     public class ExitMenu extends AbstractMenu {
 
       @Override
@@ -129,7 +170,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       return TEXTS.get("FrameworksMenu");
     }
 
-    @Order(10.0)
+    /*@Order(10.0)
     public class AddMenu extends AbstractExtensibleMenu {
 
       @Override
@@ -172,6 +213,29 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected String getConfiguredText() {
         return TEXTS.get("UpdateMenu");
       }
+    }*/
+
+    @Order(60.0)
+    public class LoadMenu extends AbstractExtensibleMenu {
+
+      @Override
+      protected String getConfiguredText() {
+        return TEXTS.get("LoadMenu");
+      }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        UploadFrameworkForm form = new UploadFrameworkForm();
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        if (desktopForm != null) {
+          form.setProjectId(desktopForm.getProjectId());
+        }
+        form.startNew();
+
+        form.waitFor();
+        FrameworkTreeForm treeForm = new FrameworkTreeForm();
+        treeForm.activate();
+      }
     }
   }
 
@@ -190,25 +254,37 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected String getConfiguredText() {
         return TEXTS.get("AddMenu");
       }
+
+      @Override
+      protected void execAction() throws ProcessingException {
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        TargetForm form = new TargetForm();
+        form.setProjectId(desktopForm.getProjectId());
+        form.startNew();
+
+        form.waitFor();
+        if (form.isFormStored()) {
+          desktopForm.refresh();
+          desktopForm.activate();
+        }
+      }
     }
 
-    @Order(20.0)
+    /*@Order(20.0)
     public class ModifyMenu extends AbstractExtensibleMenu {
 
       @Override
       protected String getConfiguredText() {
         return TEXTS.get("ModifyMenu");
       }
-    }
-
-    @Order(30.0)
-    public class RemoveMenu extends AbstractExtensibleMenu {
 
       @Override
-      protected String getConfiguredText() {
-        return TEXTS.get("RemoveMenu");
+      protected void execAction() throws ProcessingException {
+        DesktopForm desktopForm = findForm(DesktopForm.class);
+        desktopForm.editNode();
       }
-    }
+    }*/
+
   }
 
   @Order(40.0)
@@ -219,7 +295,19 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       return TEXTS.get("ToolsMenu");
     }
 
-    @Order(10.0)
+    @Override
+    protected boolean getConfiguredVisible() {
+      return false;
+    }
+
+    @Override
+    protected void execAction() throws ProcessingException {
+      FrameworksForm form = new FrameworksForm();
+      DesktopForm desktopForm = findForm(DesktopForm.class);
+      //      form.setProjectNr(desktopForm.getProjectId().longValue());
+      form.startModify();
+    }
+    /*@Order(10.0)
     public class AddMenu extends AbstractExtensibleMenu {
 
       @Override
@@ -244,7 +332,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       protected String getConfiguredText() {
         return TEXTS.get("RemoveMenu");
       }
-    }
+    }*/
   }
 
   @Order(50.0)
@@ -271,12 +359,49 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  @Order(20.0)
-  public class WIPTool extends AbstractFormToolButton<WIPForm> {
-
-    public WIPTool() {
+  /*@Order(10.0)
+  public class TargetsTool extends AbstractFormToolButton {
+    public TargetsTool() {
       setProperty("leftSide", true);
     }
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Targets");
+    }
+  }*/
+
+  @Order(20.0)
+  public class FrameworkTool extends AbstractFormToolButton {
+    public FrameworkTool() {
+      setProperty("leftSide", true);
+    }
+
+    @Override
+    protected String getConfiguredText() {
+      return TEXTS.get("Framework");
+    }
+
+    @Override
+    protected void execToggleAction(boolean selected) throws ProcessingException {
+      FrameworkTreeForm form = findForm(FrameworkTreeForm.class);
+      if (selected) {
+        if (form == null) {
+          form = new FrameworkTreeForm();
+          form.startView();
+        }
+        form.activate();
+      }
+      else {
+        if (form != null) {
+          form.doClose();
+        }
+      }
+    }
+  }
+
+  @Order(30.0)
+  public class WIPTool extends AbstractFormToolButton<WIPForm> {
 
     @Override
     protected String getConfiguredText() {
@@ -299,7 +424,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  @Order(30.0)
+  @Order(40.0)
   public class ViewerTool extends AbstractFormToolButton<ViewerForm> {
 
     @Override

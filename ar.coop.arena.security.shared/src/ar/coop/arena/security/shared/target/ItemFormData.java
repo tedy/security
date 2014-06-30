@@ -75,6 +75,10 @@ public class ItemFormData extends AbstractFormData {
     return getFieldByClass(Port.class);
   }
 
+  public Protocol getProtocol() {
+    return getFieldByClass(Protocol.class);
+  }
+
   public Risk getRisk() {
     return getFieldByClass(Risk.class);
   }
@@ -120,6 +124,22 @@ public class ItemFormData extends AbstractFormData {
     private static final long serialVersionUID = 1L;
 
     public Port() {
+    }
+  }
+
+  public static class Protocol extends AbstractValueFieldData<String> {
+    private static final long serialVersionUID = 1L;
+
+    public Protocol() {
+    }
+
+    /**
+     * list of derived validation rules.
+     */
+    @Override
+    protected void initValidationRules(java.util.Map<String, Object> ruleMap) {
+      super.initValidationRules(ruleMap);
+      ruleMap.put(ValidationRule.MAX_LENGTH, 4000);
     }
   }
 
