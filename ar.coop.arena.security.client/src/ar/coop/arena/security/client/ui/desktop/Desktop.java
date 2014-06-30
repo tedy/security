@@ -8,7 +8,6 @@ import org.eclipse.scout.rt.client.ClientSyncJob;
 import org.eclipse.scout.rt.client.ui.action.keystroke.AbstractKeyStroke;
 import org.eclipse.scout.rt.client.ui.action.menu.AbstractMenu;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
-import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractFormToolButton;
 import org.eclipse.scout.rt.client.ui.desktop.outline.pages.IPage;
 import org.eclipse.scout.rt.client.ui.form.ScoutInfoForm;
 import org.eclipse.scout.rt.extension.client.ui.action.menu.AbstractExtensibleMenu;
@@ -66,8 +65,8 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
 
     /*ViewerForm viewerForm = new ViewerForm();
     viewerForm.startModify();*/
-    /*WIPForm wipForm = new WIPForm();
-    wipForm.startModify();*/
+    WIPForm wipForm = new WIPForm();
+    wipForm.startModify();
   }
 
   @Order(10.0)
@@ -359,22 +358,42 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
   }
 
-  /*@Order(10.0)
-  public class TargetsTool extends AbstractFormToolButton {
+  @Order(10.0)
+  public class TargetsTool extends SecurityAbstractFormToolButton<DesktopForm> {
+
     public TargetsTool() {
-      setProperty("leftSide", true);
+      setLeftSide(true);
+    }
+
+    @Override
+    public boolean formClose() {
+      return false;
     }
 
     @Override
     protected String getConfiguredText() {
       return TEXTS.get("Targets");
     }
-  }*/
+
+    @Override
+    protected void execStartForm() throws ProcessingException {
+      if (getForm() == null) {
+        DesktopForm f = findForm(DesktopForm.class);
+        if (f == null) {
+          f = new DesktopForm();
+          decorateForm(f);
+          f.startView();
+        }
+        setForm(f);
+      }
+    }
+  }
 
   @Order(20.0)
-  public class FrameworkTool extends AbstractFormToolButton {
+  public class FrameworkTool extends SecurityAbstractFormToolButton<FrameworkTreeForm> {
+
     public FrameworkTool() {
-      setProperty("leftSide", true);
+      setLeftSide(true);
     }
 
     @Override
@@ -383,25 +402,21 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
 
     @Override
-    protected void execToggleAction(boolean selected) throws ProcessingException {
-      FrameworkTreeForm form = findForm(FrameworkTreeForm.class);
-      if (selected) {
-        if (form == null) {
-          form = new FrameworkTreeForm();
-          form.startView();
+    protected void execStartForm() throws ProcessingException {
+      if (getForm() == null) {
+        FrameworkTreeForm f = findForm(FrameworkTreeForm.class);
+        if (f == null) {
+          f = new FrameworkTreeForm();
+          decorateForm(f);
+          f.startView();
         }
-        form.activate();
-      }
-      else {
-        if (form != null) {
-          form.doClose();
-        }
+        setForm(f);
       }
     }
   }
 
   @Order(30.0)
-  public class WIPTool extends AbstractFormToolButton<WIPForm> {
+  public class WIPTool extends SecurityAbstractFormToolButton<WIPForm> {
 
     @Override
     protected String getConfiguredText() {
@@ -416,16 +431,19 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     @Override
     protected void execStartForm() throws ProcessingException {
       if (getForm() == null) {
-        WIPForm f = new WIPForm();
-        decorateForm(f);
-        f.startModify();
+        WIPForm f = findForm(WIPForm.class);
+        if (f == null) {
+          f = new WIPForm();
+          decorateForm(f);
+          f.startModify();
+        }
         setForm(f);
       }
     }
   }
 
   @Order(40.0)
-  public class ViewerTool extends AbstractFormToolButton<ViewerForm> {
+  public class ViewerTool extends SecurityAbstractFormToolButton<ViewerForm> {
 
     @Override
     protected String getConfiguredText() {

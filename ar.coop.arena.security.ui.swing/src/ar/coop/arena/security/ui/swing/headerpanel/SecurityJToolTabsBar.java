@@ -15,10 +15,11 @@ import javax.swing.border.EmptyBorder;
 import org.eclipse.scout.commons.OptimisticLock;
 import org.eclipse.scout.rt.client.ui.action.tool.IToolButton;
 import org.eclipse.scout.rt.client.ui.desktop.IDesktop;
-import org.eclipse.scout.rt.client.ui.desktop.outline.AbstractFormToolButton;
 import org.eclipse.scout.rt.ui.swing.ISwingEnvironment;
 import org.eclipse.scout.rt.ui.swing.action.ISwingScoutAction;
 import org.eclipse.scout.rt.ui.swing.window.desktop.toolbar.AbstractJTabBar;
+
+import ar.coop.arena.security.client.ui.desktop.SecurityAbstractFormToolButton;
 
 public class SecurityJToolTabsBar extends AbstractJTabBar {
   private static final long serialVersionUID = -4837922524111308399L;
@@ -49,18 +50,14 @@ public class SecurityJToolTabsBar extends AbstractJTabBar {
     swingToolBar.setLayout(new GridBagLayout());
 
     for (IToolButton scoutToolButton : desktop.getToolButtons()) {
-      if (!(scoutToolButton instanceof AbstractFormToolButton)) {
-        continue; // only render @{link AbstractFormToolButton}'s
+      if (!(scoutToolButton instanceof SecurityAbstractFormToolButton)) {
+        continue; // only render @{link SecurityAbstractFormToolButton}'s
       }
       if (m_leftSide) {
-        if (!scoutToolButton.hasProperty("leftSide") || !((boolean) scoutToolButton.getProperty("leftSide"))) {
-          continue;
-        }
+        if (!((SecurityAbstractFormToolButton) scoutToolButton).getLeftSide()) continue;
       }
       else {
-        if (scoutToolButton.hasProperty("leftSide") && ((boolean) scoutToolButton.getProperty("leftSide"))) {
-          continue;
-        }
+        if (((SecurityAbstractFormToolButton) scoutToolButton).getLeftSide()) continue;
       }
 
       ISwingScoutAction<IToolButton> swingScoutToolButton = createSwingScoutToolButton(scoutToolButton);
