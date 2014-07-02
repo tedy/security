@@ -6,7 +6,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import javax.swing.JLabel;
-import javax.swing.JSplitPane;
+//import javax.swing.JSplitPane;
 import javax.swing.Spring;
 import javax.swing.SpringLayout;
 import javax.swing.UIManager;
@@ -28,13 +28,12 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
   private JLabel m_windowIcons;
 
   private int m_topLevelMenuCount;
-//  protected AbstractJViewTabsBar m_viewTabsPanel;
-  protected AbstractJTabBar m_viewTabsPanel;
-  protected AbstractJTabBar m_toolTabsPanel;
+  protected AbstractJTabBar m_toolTabsPanelRight;
+  protected AbstractJTabBar m_toolTabsPanelLeft;
 
   protected final SpringLayout m_layout;
 
-  private JSplitPane splitPane;
+//  protected JSplitPane splitPane;
 
   public SecuritySwingScoutHeaderPanel() {
     m_layout = new SpringLayout();
@@ -45,26 +44,25 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
     m_topLevelMenuCount = getScoutObject().getMenus().length;
     final JPanelEx container = new JPanelEx(m_layout);
 
-    // view tabs
-    m_viewTabsPanel = createViewTabsBar();
-//    container.add(m_viewTabsPanel);
-//    m_layout.putConstraint(SpringLayout.NORTH, m_viewTabsPanel, DISTANCE_NAVIGATION_TABS, SpringLayout.SOUTH, m_navigationPanel);
-    m_layout.putConstraint(SpringLayout.SOUTH, m_viewTabsPanel, 0, SpringLayout.SOUTH, container);
-    m_layout.putConstraint(SpringLayout.WEST, m_viewTabsPanel, 0, SpringLayout.WEST, container);
-    m_layout.putConstraint(SpringLayout.EAST, m_viewTabsPanel, 0, SpringLayout.EAST, container);
+    m_toolTabsPanelRight = createViewTabsBar();
+    container.add(m_toolTabsPanelRight);
+    m_layout.putConstraint(SpringLayout.SOUTH, m_toolTabsPanelRight, 0, SpringLayout.SOUTH, container);
+    m_layout.putConstraint(SpringLayout.EAST, m_toolTabsPanelRight, 0, SpringLayout.EAST, container);
+    m_layout.putConstraint(SpringLayout.WEST, m_toolTabsPanelRight, 0, SpringLayout.WEST, container);
 
-    // tool buttons (only buttons of the type @{link AbstractFormToolButton} are considered)
-    m_toolTabsPanel = createToolTabsBar();
-    ((SecurityJToolTabsBar) m_toolTabsPanel).setSwingScoutHeaderPanel(this);
-//    container.add(m_toolTabsPanel);
-    m_layout.putConstraint(SpringLayout.NORTH, m_toolTabsPanel, 0, SpringLayout.WEST, m_viewTabsPanel);
-    m_layout.putConstraint(SpringLayout.SOUTH, m_toolTabsPanel, 0, SpringLayout.SOUTH, container);
-    m_layout.putConstraint(SpringLayout.EAST, m_toolTabsPanel, 0, SpringLayout.EAST, container);
+    m_toolTabsPanelLeft = createToolTabsBar();
+    ((SecurityJToolTabsBar) m_toolTabsPanelLeft).setSwingScoutHeaderPanel(this);
+    container.add(m_toolTabsPanelLeft);
+    m_layout.putConstraint(SpringLayout.NORTH, m_toolTabsPanelLeft, 0, SpringLayout.WEST, m_toolTabsPanelRight);
+    m_layout.putConstraint(SpringLayout.SOUTH, m_toolTabsPanelLeft, 0, SpringLayout.SOUTH, container);
+    m_layout.putConstraint(SpringLayout.EAST, m_toolTabsPanelLeft, 0, SpringLayout.EAST, container);
 
-    splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, m_viewTabsPanel, m_toolTabsPanel);
-//    splitPane.setDividerSize(300);
+    /*splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true, m_toolTabsPanelRight, m_toolTabsPanelLeft);
+    //    splitPane.setDividerSize(300);
+    //    splitPane.setDividerLocation(0.8);
+    //    splitPane.setMinimumSize(new Dimension(500, 0));
     splitPane.setEnabled(false);
-    container.add(splitPane);
+    container.add(splitPane);*/
 
     Color color = UIManager.getColor("HeaderPanel.background");
     if (color != null) {
@@ -100,8 +98,8 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
         }
 
         private int calculatePanelHeight() {
-          double heightViewTabPanel = m_viewTabsPanel.getPreferredSize().getHeight();
-          double heightToolTabsPanel = m_toolTabsPanel.getPreferredSize().getHeight();
+          double heightViewTabPanel = m_toolTabsPanelRight.getPreferredSize().getHeight();
+          double heightToolTabsPanel = m_toolTabsPanelLeft.getPreferredSize().getHeight();
 
           double heightBottomPanel = Math.max(heightViewTabPanel, heightToolTabsPanel);
           return (int) (DISTANCE_NAVIGATION_TABS + heightBottomPanel);
@@ -125,7 +123,7 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
   }
 
   public AbstractJTabBar getSwingToolTabsPanel() {
-    return m_toolTabsPanel;
+    return m_toolTabsPanelLeft;
   }
 
   /**
@@ -139,16 +137,16 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
   public void adjustToolButtonPanelWidth(int width, boolean force) {
     // it is crucial to compare the new value against the current value hold by the layout manager and not the size of the toolTabsPanel itself.
     // This is because the toolTabsPanel might have the correct size, but the layout manager was never told about.
-    Spring constraintLeft = m_layout.getConstraint(SpringLayout.WEST, m_toolTabsPanel);
-    Spring constraintRigth = m_layout.getConstraint(SpringLayout.EAST, m_toolTabsPanel);
+    Spring constraintLeft = m_layout.getConstraint(SpringLayout.WEST, m_toolTabsPanelLeft);
+    Spring constraintRigth = m_layout.getConstraint(SpringLayout.EAST, m_toolTabsPanelLeft);
     int currentWidth = (constraintRigth.getValue() - constraintLeft.getValue());
 
     if (force || width != currentWidth) {
       // adjust width of tool button bar to be equals to the tool bar width
-      m_layout.putConstraint(SpringLayout.WEST, m_toolTabsPanel, width * -1, SpringLayout.EAST, getSwingField());
+      m_layout.putConstraint(SpringLayout.WEST, m_toolTabsPanelLeft, width * -1, SpringLayout.EAST, getSwingField());
 
       // set maximum width to outline tabs in order to not obscure tool buttons
-      m_layout.putConstraint(SpringLayout.EAST, m_viewTabsPanel, width * -1, SpringLayout.EAST, getSwingField());
+      m_layout.putConstraint(SpringLayout.EAST, m_toolTabsPanelRight, width * -1, SpringLayout.EAST, getSwingField());
 
       // revalidate layout to immediately reflect changed layout
       getSwingField().revalidate();
@@ -156,12 +154,12 @@ public class SecuritySwingScoutHeaderPanel extends SwingScoutComposite<IDesktop>
   }
 
   private void rebuildViewTabs() {
-//    ((SecurityJViewTabsBar) m_viewTabsPanel).rebuild(getScoutObject());
-    ((SecurityJToolTabsBar) m_viewTabsPanel).rebuild(getScoutObject());
+//    ((SecurityJViewTabsBar) m_toolTabsPanelRight).rebuild(getScoutObject());
+    ((SecurityJToolTabsBar) m_toolTabsPanelRight).rebuild(getScoutObject());
   }
 
   private void rebuildToolTabs() {
-    ((SecurityJToolTabsBar) m_toolTabsPanel).rebuild(getScoutObject());
+    ((SecurityJToolTabsBar) m_toolTabsPanelLeft).rebuild(getScoutObject());
   }
 
   protected AbstractJTabBar createToolTabsBar() {
