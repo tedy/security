@@ -91,11 +91,15 @@ public class SecurityJToolTabsBar extends AbstractJTabBar {
     gbc.weighty = 0;
     gbc.gridx = 0;
     gbc.gridy = 1;
+//    gbc.fill = GridBagConstraints.HORIZONTAL;
+//    if (m_leftSide) gbc.anchor = GridBagConstraints.EAST;
+//    else gbc.anchor = GridBagConstraints.WEST;
     gbc.fill = GridBagConstraints.NONE;
     gbc.anchor = GridBagConstraints.SOUTH;
     add(swingToolBar, gbc);
 
-    /*filler = new JPanel();
+    // right filler (transparent)
+    filler = new JPanel();
     filler.setOpaque(false);
     gbc = new GridBagConstraints();
     gbc.gridx = 1;
@@ -104,7 +108,7 @@ public class SecurityJToolTabsBar extends AbstractJTabBar {
     gbc.weightx = 1;
     gbc.weighty = 1;
     gbc.fill = GridBagConstraints.BOTH;
-    add(filler, gbc);*/
+    add(filler, gbc);
 
     swingToolBar.addComponentListener(new ComponentAdapter() {
 
