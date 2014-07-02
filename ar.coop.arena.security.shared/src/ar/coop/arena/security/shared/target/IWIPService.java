@@ -8,10 +8,6 @@ import org.eclipse.scout.service.IService2;
 @InputValidation(IValidationStrategy.PROCESS.class)
 public interface IWIPService extends IService2 {
 
-  WIPFormData prepareCreate(WIPFormData formData) throws ProcessingException;
-
-  WIPFormData create(WIPFormData formData) throws ProcessingException;
-
   WIPFormData load(WIPFormData formData) throws ProcessingException;
 
   WIPFormData store(WIPFormData formData) throws ProcessingException;

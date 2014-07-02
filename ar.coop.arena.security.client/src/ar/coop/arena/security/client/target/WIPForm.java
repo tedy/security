@@ -47,18 +47,6 @@ public class WIPForm extends AbstractForm {
     return TEXTS.get("WIP");
   }
 
-  /*public CancelButton getCancelButton() {
-    return getFieldByClass(CancelButton.class);
-  }*/
-
-  @Override
-  protected void execDataChanged(Object... dataTypes) throws ProcessingException {
-    //TODO [tedy] Auto-generated method stub.
-    for (Object object : dataTypes) {
-      System.out.println(object);
-    }
-  }
-
   @Override
   protected void execFormActivated() throws ProcessingException {
     ((ModifyHandler) getHandler()).execLoad();
@@ -72,6 +60,16 @@ public class WIPForm extends AbstractForm {
   @FormData
   public void setNodeNr(Long nodeNr) {
     this.nodeNr = nodeNr;
+  }
+
+  @FormData
+  public int getNodeType() {
+    return m_nodeType;
+  }
+
+  @FormData
+  public void setNodeType(int nodeType) {
+    m_nodeType = nodeType;
   }
 
   public void startModify() throws ProcessingException {
@@ -128,13 +126,9 @@ public class WIPForm extends AbstractForm {
 
       @Override
       protected void execAction() throws ProcessingException {
-        getForm().doSave();
+        if (getNodeType() == 2) getForm().doSave();
       }
     }
-
-    /*@Order(20.0)
-    public class CancelButton extends AbstractCancelButton {
-    }*/
   }
 
   public class ModifyHandler extends AbstractFormHandler {
@@ -156,15 +150,5 @@ public class WIPForm extends AbstractForm {
       exportFormData(formData);
       formData = service.store(formData);
     }
-  }
-
-  @FormData
-  public int getNodeType() {
-    return m_nodeType;
-  }
-
-  @FormData
-  public void setNodeType(int nodeType) {
-    m_nodeType = nodeType;
   }
 }

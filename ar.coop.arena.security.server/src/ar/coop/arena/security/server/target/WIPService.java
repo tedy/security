@@ -24,46 +24,41 @@ import ar.coop.arena.security.shared.target.WIPFormData;
 public class WIPService extends AbstractService implements IWIPService {
 
   @Override
-  public WIPFormData prepareCreate(WIPFormData formData) throws ProcessingException {
-    //TODO [tedy] business logic here
-    return formData;
-  }
-
-  @Override
-  public WIPFormData create(WIPFormData formData) throws ProcessingException {
-    //TODO [tedy] business logic here.
-    return formData;
-  }
-
-  @Override
   public WIPFormData load(WIPFormData formData) throws ProcessingException {
     if (!ACCESS.check(new ReadWIPPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    /*SQL.selectInto("SELECT CONTENT FROM TARGET " +
-        "WHERE  TARGETID = :nodeNr INTO   :content", formData);*/
-    Object[][] result = SQL.select("SELECT PATH AS ICONID, PORT, PROTOCOL, NAME, CONTENT FROM TARGETITEM "
-        + " LEFT JOIN RISK ON (TARGETITEM.RISKID=RISK.RISKID) "
-        + " LEFT JOIN ICONS ON (RISK.ICONID=ICONS.ICONID)"
-        + "WHERE  TARGETITEMID = :nodeNr", formData);
 
-    if (result != null && result.length > 0 && result[0].length > 0) {
+    if (formData.getNodeType() != 0) {
+      String sql = "SELECT PATH AS ICONID, PORT, PROTOCOL, NAME, CONTENT FROM TARGETITEM "
+          + " LEFT JOIN RISK ON (TARGETITEM.RISKID=RISK.RISKID) "
+          + " LEFT JOIN ICONS ON (RISK.ICONID=ICONS.ICONID)";
+      if (formData.getNodeType() == 1) sql += "WHERE  TARGETID = :nodeNr";
+      if (formData.getNodeType() == 2) sql += "WHERE  TARGETITEMID = :nodeNr";
+
+      Object[][] result = SQL.select(sql, formData);
+
+      if (result != null) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < result.length; i++) {
 //      HTMLContent content = new HTMLContent((String) result[0][4]);
 //      formData.getContent().setValue(unparseHTML(content));
+          if (i > 0) sb.append("<br/><br/><hr/><br/>");
 
-      StringBuilder sb = new StringBuilder();
-      sb.append("<p id=\"header\">");
-      sb.append(result[0][1]);
-      sb.append("  ");
-      sb.append(result[0][2]);
-      sb.append("  ");
-      sb.append(result[0][3]);
-      sb.append("</p>");
-      sb.append("<br/><hr/>");
-      sb.append("<p id=\"content\">");
-      sb.append(escapeBr((String) result[0][4]));
-      sb.append("</p>");
-      formData.getContent().setValue(sb.toString());
+          sb.append("<p style=\"color:red;font-size:14px;\" id=\"header\">");
+          sb.append(result[i][1]);
+          sb.append("  ");
+          sb.append(result[i][2]);
+          sb.append("  ");
+          sb.append(result[i][3]);
+          sb.append("</p>");
+          sb.append("<br/><hr/>");
+          sb.append("<p id=\"content\">");
+          sb.append(escapeBr((String) result[i][4]));
+          sb.append("<br/></p>");
+        }
+        formData.getContent().setValue(sb.toString());
+      }
     }
     return formData;
   }

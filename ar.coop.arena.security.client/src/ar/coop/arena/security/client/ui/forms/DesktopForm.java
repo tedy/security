@@ -118,11 +118,11 @@ public class DesktopForm extends AbstractForm {
           int nodeType = 1;
           Long nodeNr = 0l;
           if (id.indexOf("_") == -1) {
-            nodeType = 1;
+            nodeType = 1; // Target
             nodeNr = new Long(id);
           }
           else if (id.indexOf("_") >= 0) {
-            nodeType = 2;
+            nodeType = 2; // TargetItem
             nodeNr = new Long(id.substring(id.indexOf("_") + 1));
           }
           //          form.getContentField().setValue(formData.getResult());

@@ -16,7 +16,7 @@ public class HTMLContent {
 
   private String head;
   private List<PContent> ps = new ArrayList<PContent>();
-  
+
   public HTMLContent() {
   }
 
@@ -33,7 +33,6 @@ public class HTMLContent {
     this.head = head;
   }
 
-
   @XmlElementWrapper(name = "body")
   @XmlElement(name = "p")
   public List<PContent> getP() {
@@ -45,12 +44,13 @@ public class HTMLContent {
   }
 
   public String getContent() {
+    StringBuilder sb = new StringBuilder();
     for (PContent p : ps) {
       if ("content".equals(p.getId())) {
-        return p.getContent();
+        sb.append(p.getContent());
       }
     }
-    return "";
+    return sb.toString();
   }
 
 }
