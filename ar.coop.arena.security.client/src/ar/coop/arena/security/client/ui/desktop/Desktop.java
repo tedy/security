@@ -395,6 +395,13 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     }
 
     @Override
+    protected void execAction() throws ProcessingException {
+      if (getForm() != null) {
+        getForm().refresh();
+      }
+    }
+
+    @Override
     protected void execStartForm() throws ProcessingException {
       if (getForm() == null) {
         FrameworkTreeForm f = findForm(FrameworkTreeForm.class);

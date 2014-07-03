@@ -26,6 +26,7 @@ import ar.coop.arena.security.shared.framework.services.lookup.FrameworkLookupCa
 public class FrameworkTreeForm extends AbstractForm {
 
   private Integer frameworkNr;
+
   public FrameworkTreeForm() throws ProcessingException {
     super();
   }
@@ -143,5 +144,9 @@ public class FrameworkTreeForm extends AbstractForm {
       //      formData = service.load(formData);
       importFormData(formData);
     }
+  }
+
+  public void refresh() throws ProcessingException {
+    getFrameworkTreeField().loadRootNode();
   }
 }

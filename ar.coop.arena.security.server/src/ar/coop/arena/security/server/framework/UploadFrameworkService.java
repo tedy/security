@@ -31,42 +31,46 @@ public class UploadFrameworkService extends AbstractService implements IUploadFr
 
   @Override
   public UploadFrameworkFormData create(UploadFrameworkFormData formData) throws ProcessingException {
+    Framework fwkXML;
     try {
       // get content from remote file
       ByteArrayOutputStream bos = new ByteArrayOutputStream();
       formData.getRemoteFile().writeData(bos);
       bos.flush();
 
-      Framework fwkXML = parseXML(bos.toByteArray());
+      fwkXML = parseXML(bos.toByteArray());
 
-      Framework fwkInDB = getFramework(fwkXML);
-      if (fwkInDB == null) {
-        try {
-          SQL.insert(
-              //FRAMEWORKID,
-              "INSERT INTO FRAMEWORK (VERSION, NAME, AUTHOR, INFO) " +
-                  // :{fwk.frameworkId}, 
-                  "VALUES (:{fwk.version}, :{fwk.name}, :{fwk.author}, :{fwk.info}) "
-              , new NVPair("fwk", fwkXML, Framework.class));
-
-          fwkInDB = getFramework(fwkXML); // 4 gets FRAMEWORKID
-          insertItems(fwkXML.getItems(), fwkInDB.getFrameworkId());
-
-          SQL.update("UPDATE PROJECT SET"
-              + " FRAMEWORKID = :{fwk.frameworkId} ,"
-              + " VERSION = :{fwk.version} "
-              + " WHERE PROJECTID = :projectId"
-              , new NVPair("projectId", formData.getProjectId()
-                  , Integer.class), new NVPair("fwk", fwkXML, Framework.class));
-        }
-        catch (ProcessingException e) {
-          SQL.rollback();
-          throw new ProcessingException("Could not persist remote file.", e);
-        }
-      }
     }
     catch (IOException e) {
-      throw new ProcessingException("Could not process remote file.", e);
+      throw new ProcessingException("Could not parse or process remote file.", e);
+    }
+
+    try {
+      Framework fwkInDB = getFramework(fwkXML);
+      if (fwkInDB == null) {
+        SQL.insert(
+            //FRAMEWORKID,
+            "INSERT INTO FRAMEWORK (VERSION, NAME, AUTHOR, INFO) " +
+                // :{fwk.frameworkId}, 
+                "VALUES (:{fwk.version}, :{fwk.name}, :{fwk.author}, :{fwk.info}) "
+            , new NVPair("fwk", fwkXML, Framework.class));
+
+        fwkInDB = getFramework(fwkXML); // 4 gets FRAMEWORKID
+        insertItems(fwkXML.getItems(), fwkInDB.getFrameworkId());
+      }
+      if (fwkInDB != null) {
+        SQL.update("UPDATE PROJECT SET"
+            + " FRAMEWORKID = :{fwk.frameworkId} ,"
+            + " VERSION = :{fwk.version} "
+            + " WHERE PROJECTID = :projectId"
+            , new NVPair("projectId", formData.getProjectId()
+                , Integer.class), new NVPair("fwk", fwkInDB, Framework.class));
+
+      }
+    }
+    catch (ProcessingException e) {
+      SQL.rollback();
+      throw new ProcessingException("Could not persist remote file.", e);
     }
     return formData;
   }
