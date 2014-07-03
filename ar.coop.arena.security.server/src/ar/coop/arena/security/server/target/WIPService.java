@@ -28,6 +28,26 @@ public class WIPService extends AbstractService implements IWIPService {
     if (!ACCESS.check(new ReadWIPPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
+    StringBuilder sb = new StringBuilder();
+
+    if (formData.getNodeType() == 1) {
+      String sql = "SELECT TARGET.NAME, TARGETTYPE.NAME, PATH AS ICONID FROM TARGET "
+          + " LEFT JOIN TARGETTYPE ON (TARGET.TARGETTYPEID=TARGETTYPE.TARGETTYPEID) "
+          + " LEFT JOIN ICONS ON (TARGETTYPE.ICONID=ICONS.ICONID)"
+          + "WHERE  TARGETID = :nodeNr";
+
+      Object[][] result = SQL.select(sql, formData);
+      if (result != null) {
+        sb.append("<p style=\"color:orange;font-size:16px;\" id=\"headerTarget\">");
+        sb.append(result[0][0]);
+        sb.append("  ");
+        sb.append(result[0][1]);
+        sb.append("  ");
+        sb.append(result[0][2]);
+        sb.append("</p>");
+        sb.append("<br/><br/><hr/><br/>");
+      }
+    }
 
     if (formData.getNodeType() != 0) {
       String sql = "SELECT PATH AS ICONID, PORT, PROTOCOL, NAME, CONTENT FROM TARGETITEM "
@@ -39,7 +59,6 @@ public class WIPService extends AbstractService implements IWIPService {
       Object[][] result = SQL.select(sql, formData);
 
       if (result != null) {
-        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < result.length; i++) {
 //      HTMLContent content = new HTMLContent((String) result[0][4]);
 //      formData.getContent().setValue(unparseHTML(content));
@@ -57,8 +76,9 @@ public class WIPService extends AbstractService implements IWIPService {
           sb.append(escapeBr((String) result[i][4]));
           sb.append("<br/></p>");
         }
-        formData.getContent().setValue(sb.toString());
       }
+
+      formData.getContent().setValue(sb.toString());
     }
     return formData;
   }

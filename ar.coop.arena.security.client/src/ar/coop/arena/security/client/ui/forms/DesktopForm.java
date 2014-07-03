@@ -125,7 +125,6 @@ public class DesktopForm extends AbstractForm {
             nodeType = 2; // TargetItem
             nodeNr = new Long(id.substring(id.indexOf("_") + 1));
           }
-          //          form.getContentField().setValue(formData.getResult());
 
           WIPForm form = getDesktop().findForm(WIPForm.class);
           if (form == null) {
