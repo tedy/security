@@ -20,7 +20,6 @@ public class ItemService extends AbstractService implements IItemService {
     if (!ACCESS.check(new CreateItemPermission())) {
       throw new VetoException(TEXTS.get("AuthorizationFailed"));
     }
-    //TODO [tedy] business logic here
     return formData;
   }
 
@@ -62,6 +61,20 @@ public class ItemService extends AbstractService implements IItemService {
             + " PROTOCOL = :protocol," +
             "   NAME = :name " +
             "WHERE  TARGETITEMID = :itemNr", formData);
+    return formData;
+  }
+
+  @Override
+  public ItemFormData delete(ItemFormData formData) throws ProcessingException {
+    if (!ACCESS.check(new UpdateItemPermission())) {
+      throw new VetoException(TEXTS.get("AuthorizationFailed"));
+    }
+    SQL.delete("" +
+        "DELETE FROM TARGETITEM " +
+        "WHERE  TARGETITEMID = :itemNr " +
+        " AND TARGETID = :targetId " +
+        " AND PROJECTID = :projectId"
+        , formData);
     return formData;
   }
 }

@@ -209,6 +209,68 @@ public class DesktopForm extends AbstractForm {
         }
 
         @Order(30.0)
+        public class DuplicateItemMenu extends AbstractExtensibleMenu {
+
+          @Override
+          protected String getConfiguredText() {
+            return TEXTS.get("DuplicateItem");
+          }
+
+          @Override
+          protected void execAction() throws ProcessingException {
+            ItemForm form = new ItemForm();
+            form.setProjectId(getProjectId());
+            String id = ((String) getSelectedNode().getPrimaryKey());
+            form.setTargetId(new Integer(id.substring(0, id.indexOf("_"))));
+            form.setItemNr(new Long(id.substring(id.indexOf("_") + 1)));
+            form.startDuplicate();
+
+            form.waitFor();
+            if (form.isFormStored()) {
+              refresh();
+            }
+          }
+
+          @Override
+          protected void execPrepareAction() throws ProcessingException {
+            String id = ((String) getSelectedNode().getPrimaryKey());
+            boolean activate = (id.indexOf("_") > 0);
+            setEnabled(activate);
+          }
+        }
+
+        @Order(40.0)
+        public class DeleteItemMenu extends AbstractExtensibleMenu {
+
+          @Override
+          protected String getConfiguredText() {
+            return TEXTS.get("DeleteItem");
+          }
+
+          @Override
+          protected void execAction() throws ProcessingException {
+            ItemForm form = new ItemForm();
+            form.setProjectId(getProjectId());
+            String id = ((String) getSelectedNode().getPrimaryKey());
+            form.setTargetId(new Integer(id.substring(0, id.indexOf("_"))));
+            form.setItemNr(new Long(id.substring(id.indexOf("_") + 1)));
+            form.startDelete();
+
+            form.waitFor();
+            if (form.isFormStored()) {
+              refresh();
+            }
+          }
+
+          @Override
+          protected void execPrepareAction() throws ProcessingException {
+            String id = ((String) getSelectedNode().getPrimaryKey());
+            boolean activate = (id.indexOf("_") > 0);
+            setEnabled(activate);
+          }
+        }
+
+        @Order(50.0)
         public class ModifyTargetMenu extends AbstractExtensibleMenu {
 
           @Override
@@ -222,7 +284,7 @@ public class DesktopForm extends AbstractForm {
           }
         }
 
-        @Order(40.0)
+        @Order(60.0)
         public class ToolsMenu extends AbstractExtensibleMenu {
 
           @Override

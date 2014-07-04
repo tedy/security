@@ -15,4 +15,6 @@ public interface IItemService extends IService2 {
   ItemFormData load(ItemFormData formData) throws ProcessingException;
 
   ItemFormData store(ItemFormData formData) throws ProcessingException;
+
+  public ItemFormData delete(ItemFormData formData) throws ProcessingException;
 }
