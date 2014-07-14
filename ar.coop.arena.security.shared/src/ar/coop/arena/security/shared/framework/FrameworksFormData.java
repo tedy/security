@@ -10,32 +10,82 @@ public class FrameworksFormData extends AbstractFormData {
   public FrameworksFormData() {
   }
 
-  public FrameworksNrProperty getFrameworksNrProperty() {
-    return getPropertyByClass(FrameworksNrProperty.class);
+  public FrameworkNrProperty getFrameworkNrProperty() {
+    return getPropertyByClass(FrameworkNrProperty.class);
   }
 
   /**
-   * access method for property FrameworksNr.
+   * access method for property FrameworkNr.
    */
-  public Long getFrameworksNr() {
-    return getFrameworksNrProperty().getValue();
+  public Long getFrameworkNr() {
+    return getFrameworkNrProperty().getValue();
   }
 
   /**
-   * access method for property FrameworksNr.
+   * access method for property FrameworkNr.
    */
-  public void setFrameworksNr(Long frameworksNr) {
-    getFrameworksNrProperty().setValue(frameworksNr);
+  public void setFrameworkNr(Long frameworkNr) {
+    getFrameworkNrProperty().setValue(frameworkNr);
+  }
+
+  public ProjectIdProperty getProjectIdProperty() {
+    return getPropertyByClass(ProjectIdProperty.class);
+  }
+
+  /**
+   * access method for property ProjectId.
+   */
+  public Integer getProjectId() {
+    return getProjectIdProperty().getValue();
+  }
+
+  /**
+   * access method for property ProjectId.
+   */
+  public void setProjectId(Integer projectId) {
+    getProjectIdProperty().setValue(projectId);
+  }
+
+  public SelectedFileProperty getSelectedFileProperty() {
+    return getPropertyByClass(SelectedFileProperty.class);
+  }
+
+  /**
+   * access method for property SelectedFile.
+   */
+  public String getSelectedFile() {
+    return getSelectedFileProperty().getValue();
+  }
+
+  /**
+   * access method for property SelectedFile.
+   */
+  public void setSelectedFile(String selectedFile) {
+    getSelectedFileProperty().setValue(selectedFile);
   }
 
   public Frameworks getFrameworks() {
     return getFieldByClass(Frameworks.class);
   }
 
-  public class FrameworksNrProperty extends AbstractPropertyData<Long> {
+  public class FrameworkNrProperty extends AbstractPropertyData<Long> {
     private static final long serialVersionUID = 1L;
 
-    public FrameworksNrProperty() {
+    public FrameworkNrProperty() {
+    }
+  }
+
+  public class ProjectIdProperty extends AbstractPropertyData<Integer> {
+    private static final long serialVersionUID = 1L;
+
+    public ProjectIdProperty() {
+    }
+  }
+
+  public class SelectedFileProperty extends AbstractPropertyData<String> {
+    private static final long serialVersionUID = 1L;
+
+    public SelectedFileProperty() {
     }
   }
 

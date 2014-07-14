@@ -18,7 +18,6 @@ import org.eclipse.scout.rt.shared.ui.UserAgentUtility;
 import ar.coop.arena.security.client.ClientSession;
 import ar.coop.arena.security.client.framework.FrameworkTreeForm;
 import ar.coop.arena.security.client.framework.FrameworksForm;
-import ar.coop.arena.security.client.framework.UploadFrameworkForm;
 import ar.coop.arena.security.client.project.ProjectForm;
 import ar.coop.arena.security.client.project.SelectProjectForm;
 import ar.coop.arena.security.client.runner.ViewerForm;
@@ -162,6 +161,14 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       return TEXTS.get("FrameworksMenu");
     }
 
+    @Override
+    protected void execAction() throws ProcessingException {
+      FrameworksForm form = new FrameworksForm();
+      DesktopForm desktopForm = findForm(DesktopForm.class);
+      //      form.setProjectNr(desktopForm.getProjectId().longValue());
+      form.startModify();
+    }
+
     /*@Order(10.0)
     public class AddMenu extends AbstractExtensibleMenu {
 
@@ -207,7 +214,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
       }
     }*/
 
-    @Order(60.0)
+    /*@Order(60.0) //TODO implement it in add FrameworksForm
     public class LoadMenu extends AbstractExtensibleMenu {
 
       @Override
@@ -228,8 +235,17 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
         FrameworkTreeForm treeForm = new FrameworkTreeForm();
         treeForm.activate();
       }
-    }
+    }*/
   }
+
+  /*@Order(30.0)
+  public class Separator1Menu extends AbstractExtensibleMenu {
+
+    @Override
+    protected boolean getConfiguredSeparator() {
+      return true;
+    }
+  }*/
 
   @Order(30.0)
   public class TargetsMenu extends AbstractExtensibleMenu {
@@ -237,6 +253,11 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
     @Override
     protected String getConfiguredText() {
       return TEXTS.get("TargetsMenu");
+    }
+
+    @Override
+    protected boolean getConfiguredVisible() {
+      return false;
     }
 
     @Order(10.0)
@@ -408,7 +429,7 @@ public class Desktop extends AbstractExtensibleDesktop implements IDesktop {
         if (f == null) {
           f = new FrameworkTreeForm();
           decorateForm(f);
-          f.startView();
+          f.startModify();
         }
         setForm(f);
       }
