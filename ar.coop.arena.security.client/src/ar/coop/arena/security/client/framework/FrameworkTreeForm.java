@@ -16,10 +16,13 @@ import org.eclipse.scout.rt.extension.client.ui.basic.tree.AbstractExtensibleTre
 import org.eclipse.scout.rt.shared.TEXTS;
 import org.eclipse.scout.rt.shared.services.lookup.LookupCall;
 import org.eclipse.scout.rt.shared.services.lookup.LookupRow;
+import org.eclipse.scout.service.SERVICES;
 
 import ar.coop.arena.security.client.framework.FrameworkTreeForm.MainBox.FrameworkTreeField;
 import ar.coop.arena.security.client.ui.forms.DesktopForm;
 import ar.coop.arena.security.shared.framework.FrameworkTreeFormData;
+import ar.coop.arena.security.shared.framework.FrameworksFormData;
+import ar.coop.arena.security.shared.framework.IFrameworksService;
 import ar.coop.arena.security.shared.framework.services.lookup.FrameworkLookupCall;
 
 @FormData(value = FrameworkTreeFormData.class, sdkCommand = SdkCommand.CREATE)
@@ -130,12 +133,11 @@ public class FrameworkTreeForm extends AbstractForm {
     }
   }
 
-  public void startView() throws ProcessingException {
-    startInternal(new ViewHandler());
+  public void startModify() throws ProcessingException {
+    startInternal(new ModifyHandler());
   }
 
-  public class ViewHandler extends AbstractFormHandler {
-
+  public class ModifyHandler extends AbstractFormHandler {
     @Override
     protected void execLoad() throws ProcessingException {
       //      DesktopService service = SERVICES.getService(IDesktopService.class);
@@ -143,6 +145,15 @@ public class FrameworkTreeForm extends AbstractForm {
       exportFormData(formData);
       //      formData = service.load(formData);
       importFormData(formData);
+    }
+
+    @Override
+    public void execStore() throws ProcessingException {
+      IFrameworksService service = SERVICES.getService(IFrameworksService.class);
+      FrameworksFormData formData = new FrameworksFormData();
+//      setSelectedFile(getFrameworksField().getTable().getFileNameColumn().getSelectedValue());
+      exportFormData(formData);
+      formData = service.store(formData);
     }
   }
 

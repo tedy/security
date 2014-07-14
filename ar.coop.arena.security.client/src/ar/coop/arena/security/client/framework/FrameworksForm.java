@@ -24,14 +24,16 @@ import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.ModifyButt
 import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.OkButton;
 import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.RemoveButton;
 import ar.coop.arena.security.client.framework.FrameworksForm.MainBox.UpdateBtButton;
+import ar.coop.arena.security.client.ui.forms.DesktopForm;
 import ar.coop.arena.security.shared.framework.FrameworksFormData;
 import ar.coop.arena.security.shared.framework.IFrameworksService;
-import ar.coop.arena.security.shared.framework.UpdateFrameworksPermission;
 
 @FormData(value = FrameworksFormData.class, sdkCommand = SdkCommand.CREATE)
 public class FrameworksForm extends AbstractForm {
 
-  private Long frameworksNr;
+  private Long frameworkNr;
+  private Integer m_projectId;
+  private String m_selectedFile;
 
   public FrameworksForm() throws ProcessingException {
     super();
@@ -43,13 +45,33 @@ public class FrameworksForm extends AbstractForm {
   }
 
   @FormData
-  public Long getFrameworksNr() {
-    return frameworksNr;
+  public Long getFrameworkNr() {
+    return frameworkNr;
   }
 
   @FormData
-  public void setFrameworksNr(Long frameworksNr) {
-    this.frameworksNr = frameworksNr;
+  public void setFrameworkNr(Long frameworkNr) {
+    this.frameworkNr = frameworkNr;
+  }
+
+  @FormData
+  public Integer getProjectId() {
+    return m_projectId;
+  }
+
+  @FormData
+  public void setProjectId(Integer projectId) {
+    m_projectId = projectId;
+  }
+
+  @FormData
+  public String getSelectedFile() {
+    return m_selectedFile;
+  }
+
+  @FormData
+  public void setSelectedFile(String selectedFile) {
+    m_selectedFile = selectedFile;
   }
 
   public void startModify() throws ProcessingException {
@@ -137,6 +159,11 @@ public class FrameworksForm extends AbstractForm {
       protected void execInitField() throws ProcessingException {
         IFrameworksService service = SERVICES.getService(IFrameworksService.class);
         getTable().addRowsByMatrix(service.loadFrameworksFromFileSystem(null));
+      }
+
+      @Override
+      protected boolean execIsSaveNeeded() throws ProcessingException {
+        return true;
       }
 
       @Order(10.0)
@@ -245,6 +272,11 @@ public class FrameworksForm extends AbstractForm {
       protected String getConfiguredLabel() {
         return TEXTS.get("Modify");
       }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return false;
+      }
     }
 
     @Order(40.0)
@@ -253,6 +285,11 @@ public class FrameworksForm extends AbstractForm {
       @Override
       protected String getConfiguredLabel() {
         return TEXTS.get("Remove");
+      }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return false;
       }
     }
 
@@ -263,6 +300,11 @@ public class FrameworksForm extends AbstractForm {
       protected String getConfiguredLabel() {
         return TEXTS.get("Download");
       }
+
+      @Override
+      protected boolean getConfiguredVisible() {
+        return false;
+      }
     }
 
     @Order(60.0)
@@ -272,15 +314,15 @@ public class FrameworksForm extends AbstractForm {
       protected String getConfiguredLabel() {
         return TEXTS.get("UpdateBt");
       }
-    }
-
-    @Order(70.0)
-    public class OkButton extends AbstractOkButton {
 
       @Override
       protected boolean getConfiguredVisible() {
         return false;
       }
+    }
+
+    @Order(70.0)
+    public class OkButton extends AbstractOkButton {
     }
 
     @Order(80.0)
@@ -292,18 +334,20 @@ public class FrameworksForm extends AbstractForm {
 
     @Override
     public void execLoad() throws ProcessingException {
-      IFrameworksService service = SERVICES.getService(IFrameworksService.class);
+      DesktopForm desktopForm = getDesktop().findForm(DesktopForm.class);
+      if (desktopForm != null) {
+        setProjectId(desktopForm.getProjectId());
+      }
       FrameworksFormData formData = new FrameworksFormData();
-      exportFormData(formData);
-      formData = service.load(formData);
       importFormData(formData);
-      setEnabledPermission(new UpdateFrameworksPermission());
+      getForm().setAskIfNeedSave(false);
     }
 
     @Override
     public void execStore() throws ProcessingException {
       IFrameworksService service = SERVICES.getService(IFrameworksService.class);
       FrameworksFormData formData = new FrameworksFormData();
+      setSelectedFile(getFrameworksField().getTable().getFileNameColumn().getSelectedValue());
       exportFormData(formData);
       formData = service.store(formData);
     }

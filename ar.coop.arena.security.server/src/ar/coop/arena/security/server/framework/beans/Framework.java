@@ -1,12 +1,14 @@
 package ar.coop.arena.security.server.framework.beans;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement
 //@XmlAccessorType(XmlAccessType.FIELD)
@@ -16,6 +18,7 @@ public class Framework {
   private String author;
   private String info;
   private String version;
+  private Date lastDate;
 
   public Framework() {
   }
@@ -65,13 +68,22 @@ public class Framework {
     this.info = info;
   }
 
-  @XmlAttribute
+  @XmlElement
   public String getVersion() {
     return version;
   }
 
   public void setVersion(String version) {
     this.version = version;
+  }
+
+  @XmlTransient
+  public Date getLastDate() {
+    return lastDate;
+  }
+
+  public void setLastDate(Date lastDate) {
+    this.lastDate = lastDate;
   }
 
   private List<FrameworkItem> items = new ArrayList<FrameworkItem>();

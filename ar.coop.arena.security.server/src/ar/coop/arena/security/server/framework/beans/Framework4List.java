@@ -61,7 +61,7 @@ public class Framework4List {
     this.info = info;
   }
 
-  @XmlAttribute
+  @XmlElement
   public String getVersion() {
     return version;
   }

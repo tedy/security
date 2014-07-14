@@ -11,8 +11,4 @@ public interface IUploadFrameworkService extends IService2 {
   UploadFrameworkFormData prepareCreate(UploadFrameworkFormData formData) throws ProcessingException;
 
   UploadFrameworkFormData create(UploadFrameworkFormData formData) throws ProcessingException;
-
-  UploadFrameworkFormData load(UploadFrameworkFormData formData) throws ProcessingException;
-
-  UploadFrameworkFormData store(UploadFrameworkFormData formData) throws ProcessingException;
 }
